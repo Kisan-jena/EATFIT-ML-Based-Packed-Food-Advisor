@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Recommendations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f4f4f9;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        select {
+            padding: 10px;
+            font-size: 16px;
+            width: 250px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        table {
+            width: 90%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: white;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .message {
+            color: red;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+        .product-image {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Food Recommendations for Your Health Condition</h1>
+
+    <form method="POST">
+        <label for="condition">Select your health condition:</label>
+        <select id="condition" name="condition">
+            <option value="type 1 diabetes">Type 1 Diabetes</option>
+            <option value="type 2 diabetes">Type 2 Diabetes</option>
+            <option value="hypertension">Hypertension (High BP)</option>
+            <option value="low bp">Low BP</option>
+            <option value="secondary hypertension">Secondary Hypertension</option>
+            <option value="underweight">Underweight (BMI < 18.5)</option>
+            <option value="normal">Normal (BMI 18.5 - 24.9)</option>
+            <option value="overweight">Overweight (BMI 25 - 29.9)</option>
+            <option value="high cholesterol">High Cholesterol</option>
+            <option value="low cholesterol">Low Cholesterol</option>
+            <option value="normal cholesterol">Normal Cholesterol</option>
+        </select>
+        <button type="submit">Get Recommendations</button>
+    </form>
+
+    {% if message %}
+        <div class="message">{{ message }}</div>
+    {% endif %}
+
+    {% if foods %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Product Image</th>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>Categories</th>
+                    <th>Labels</th>
+                    <th>Recommended Quantity</th>
+                    <th>Reason</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for food in foods %}
+                    <tr>
+                        <td><img src="{{ food.image_url }}" alt="Product Image" class="product-image"></td>
+                        <td>{{ food.product_name }}</td>
+                        <td>{{ food.quantity }}</td>
+                        <td>{{ food.categories }}</td>
+                        <td>{{ food.labels }}</td>
+                        <td>{{ food.recommended_quantity }}</td>
+                        <td>{{ food.reason }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+</body>
+</html>

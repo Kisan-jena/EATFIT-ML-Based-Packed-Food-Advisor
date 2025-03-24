@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutrition-Based Meal Recommendation System</title>
+    <style>
+        /* 🌟 Global Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 25px;
+            border-radius: 15px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            width: 45%;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        h2 {
+            font-size: 28px;
+            color: #fff;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        label {
+            display: block;
+            font-size: 18px;
+            color: #fff;
+            margin-top: 10px;
+        }
+
+        input, select {
+            width: 80%;
+            padding: 10px;
+            margin-top: 5px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.3);
+            color: #333;
+            text-align: center;
+        }
+
+        button {
+            width: 60%;
+            background: #ff7eb3;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s ease;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            background: #ff5588;
+            transform: scale(1.05);
+        }
+
+        .output {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            display: none;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .meal-card {
+            background: white;
+            padding: 12px;
+            border-radius: 10px;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            font-size: 18px;
+        }
+
+        .meal-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .meal-img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+            border-radius: 10px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>🍽️ Nutrition-Based Meal Plan</h2>
+        
+        <label>👤 Age:</label>
+        <input type="number" id="age" placeholder="Enter age" required>
+
+        <label>⚖️ Weight (kg):</label>
+        <input type="number" id="weight" placeholder="Enter weight" required>
+
+        <label>📏 Height (ft):</label>
+        <input type="number" id="height" placeholder="Enter height" required>
+
+        <label>🩺 Disease:</label>
+        <select id="disease">
+            <option value="None">None</option>
+            <option value="Diabetes">Diabetes</option>
+            <option value="Hypertension Patient">Hypertension Patient</option>
+            <option value="Heart Patient">Heart Patient</option>
+            <option value="Obesity">Obesity</option>
+        </select>
+
+        <h3>💪 Your BMI: <span id="bmiValue">--</span> (<span id="bmiCategory">--</span>)</h3>
+
+        <button onclick="getRecommendation()">🔍 Get Meal Plan</button>
+
+        <div id="output" class="output">
+            <h3>🍛 Recommended Meals</h3>
+            <div class="meal-card">
+                <img class="meal-img" src="https://cdn-icons-png.flaticon.com/512/4825/4825292.png" alt="Breakfast">
+                <p><strong>Breakfast:</strong> <span id="breakfast"></span></p>
+            </div>
+            <div class="meal-card">
+                <img class="meal-img" src="https://cdn-icons-png.flaticon.com/256/10551/10551600.png" alt="Lunch">
+                <p><strong>Lunch:</strong> <span id="lunch"></span></p>
+            </div>
+            <div class="meal-card">
+                <img class="meal-img" src="https://png.pngtree.com/png-clipart/20190924/original/pngtree-dinner-icon-for-your-project-png-image_4813862.jpg" alt="Dinner">
+                <p><strong>Dinner:</strong> <span id="dinner"></span></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculateBMI() {
+            let weight = document.getElementById("weight").value;
+            let height = document.getElementById("height").value;
+            if (weight && height) {
+                let heightMeters = height * 0.3048;
+                let bmi = (weight / (heightMeters * heightMeters)).toFixed(2);
+                let category = "";
+
+                if (bmi < 18.5) category = "Underweight";
+                else if (bmi < 24.9) category = "Normal weight";
+                else if (bmi < 29.9) category = "Overweight";
+                else category = "Obese";
+
+                document.getElementById("bmiValue").innerText = bmi;
+                document.getElementById("bmiCategory").innerText = category;
+            } else {
+                document.getElementById("bmiValue").innerText = "--";
+                document.getElementById("bmiCategory").innerText = "--";
+            }
+        }
+
+        document.getElementById("weight").addEventListener("input", calculateBMI);
+        document.getElementById("height").addEventListener("input", calculateBMI);
+
+        function getRecommendation() {
+            let age = document.getElementById("age").value;
+            let weight = document.getElementById("weight").value;
+            let height = document.getElementById("height").value;
+            let disease = document.getElementById("disease").value;
+
+            if (!age || !weight || !height) {
+                alert("Please fill all fields!");
+                return;
+            }
+
+            fetch('/recommend_meal', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ age, weight, height, disease })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("breakfast").innerText = data.breakfast;
+                document.getElementById("lunch").innerText = data.lunch;
+                document.getElementById("dinner").innerText = data.dinner;
+                document.getElementById("output").style.display = "block";
+            })
+            .catch(error => console.error("Error:", error));
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!-- templates/verify.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Verify Nutrition Information</title>
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .preview-section {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        .image-preview {
+            width: 300px;
+            border: 2px solid #ddd;
+            padding: 10px;
+            border-radius: 8px;
+        }
+        .nutrition-edit {
+            flex-grow: 1;
+        }
+        .nutrition-form {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #333;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .button-group {
+            text-align: center;
+            margin-top: 25px;
+        }
+        .config-info {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #666;
+        }
+        .button-group button {
+            padding: 12px 25px;
+            margin: 0 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: opacity 0.3s;
+        }
+        .button-group button:hover {
+            opacity: 0.9;
+        }
+        .accept-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .reject-btn {
+            background-color: #f44336;
+            color: white;
+        }
+        .upload-new {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #2196F3;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="text-align: center">Verify Nutrition Information</h1>
+        
+        <div class="config-info">
+            OCR Configuration Used: #{{ config_number }}
+        </div>
+
+        <div class="preview-section">
+            <div class="image-preview">
+                <h3>Uploaded Image</h3>
+                <img src="{{ url_for('static', filename='uploads/' + session.filename) }}"
+                    alt="Uploaded nutrition label"
+                    style="max-width: 100%; height: auto;">
+            </div>
+
+            <div class="nutrition-edit">
+                <h3>Edit Nutrition Values</h3>
+                <form method="post" class="nutrition-form">
+                    <div class="form-group">
+                        <label>Energy (kcal):</label>
+                        <input type="number" step="0.01" name="energy_kcal" 
+                               value="{{ nutrition.get('energy_kcal', '') }}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Fat (g):</label>
+                        <input type="number" step="0.01" name="fat" 
+                               value="{{ nutrition.get('fat', '') }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Saturated Fat (g):</label>
+                        <input type="number" step="0.01" name="saturated_fat" 
+                               value="{{ nutrition.get('saturated_fat', '') }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Carbohydrates (g):</label>
+                        <input type="number" step="0.01" name="carbohydrates" 
+                               value="{{ nutrition.get('carbohydrates', '') }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Sugars (g):</label>
+                        <input type="number" step="0.01" name="sugars" 
+                               value="{{ nutrition.get('sugars', '') }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Fiber (g):</label>
+                        <input type="number" step="0.01" name="fiber" 
+                               value="{{ nutrition.get('fiber', '') }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Protein (g):</label>
+                        <input type="number" step="0.01" name="protein" 
+                               value="{{ nutrition.get('protein', '') }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Salt (g):</label>
+                        <input type="number" step="0.01" name="salt" 
+                               value="{{ nutrition.get('salt', '') }}">
+                    </div>
+
+                    <div class="button-group">
+                        <button type="submit" name="user_response" value="accept" class="accept-btn">
+                            Save & Continue ✅
+                        </button>
+                        <button type="submit" name="user_response" value="reject" class="reject-btn">
+                            Try New OCR Scan 🔄
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <a href="{{ url_for('upload_file') }}" class="upload-new">
+            Upload Different Image
+        </a>
+    </div>
+
+    <script>
+        // Form validation
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const inputs = document.querySelectorAll('input[type="number"]');
+            let isValid = true;
+
+            inputs.forEach(input => {
+                if (input.value < 0) {
+                    alert('Negative values are not allowed');
+                    isValid = false;
+                }
+            });
+
+            if (!isValid) e.preventDefault();
+        });
+    </script>
+</body>
+</html>
