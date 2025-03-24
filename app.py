@@ -1,4 +1,3 @@
-
 import os
 import io
 import cv2
@@ -6,13 +5,14 @@ import pytesseract
 import re
 import numpy as np
 import pandas as pd
-from flask import Flask, render_template, request, redirect, url_for, flash, session, send_file
+from flask import Flask, render_template, request, redirect, url_for, flash, session, send_file, jsonify
 from flask_mysqldb import MySQL
 from flask_bcrypt import Bcrypt
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from werkzeug.utils import secure_filename
 import time
+from Diet_plan import recommend_meal, calculate_bmi
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -20,7 +20,7 @@ app.secret_key = os.urandom(24)
 # MySQL configurations
 app.config['MYSQL_HOST'] = '127.0.0.1'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'root'
+app.config['MYSQL_PASSWORD'] = 'Kisanjena@123'
 app.config['MYSQL_DB'] = 'user_database'
 
 mysql = MySQL(app)
@@ -561,7 +561,7 @@ def verify_extraction():
     if 'file_path' not in session or 'filename' not in session:
         return redirect(url_for('upload_file'))
     
-    if request.method == "POST":
+    if request.method == 'POST':
         if request.form.get('user_response') == 'accept':
             nutrition = session.get('nutrition', {})
             fields = [
@@ -615,7 +615,7 @@ def product_details():
 
 @app.route("/diet_recommendation")
 def diet_recommendation():
-    pass
+    return redirect(url_for('diet_plan'))
 
 @app.route("/cart")
 def cart():
@@ -668,6 +668,55 @@ def get_meal():
     except Exception as e:
         print(f"❌ Error: {e}")
         return jsonify({"error": str(e)})
+
+# Routes for diet plan
+@app.route('/diet_plan')
+def diet_plan():
+    if 'user_id' not in session:
+        flash('Please login first')
+        return redirect(url_for('login'))
+    
+    # Get user's health data from database
+    cur = mysql.connection.cursor()
+    cur.execute("""
+        SELECT height, weight, age, bmi 
+        FROM health_data 
+        WHERE user_id = %s
+    """, (session['user_id'],))
+    health_data = cur.fetchone()
+    cur.close()
+    
+    if not health_data:
+        flash('Please complete your health profile first')
+        return redirect(url_for('health_form'))
+    
+    return render_template('diet_plan.html', 
+                         height=health_data[0],
+                         weight=health_data[1],
+                         age=health_data[2],
+                         bmi=health_data[3])
+
+@app.route('/get_diet_plan', methods=['POST'])
+def get_diet_plan():
+    if 'user_id' not in session:
+        return jsonify({'error': 'Please login first'}), 401
+    
+    try:
+        disease = request.form.get('disease', 'none')
+        height = float(request.form.get('height'))  # Height in feet
+        weight = float(request.form.get('weight'))
+        age = int(request.form.get('age'))
+        
+        # Get meal recommendations
+        recommendations = recommend_meal(age, weight, height, disease)
+        
+        return jsonify({
+            'breakfast': recommendations['breakfast'],
+            'lunch': recommendations['lunch'],
+            'dinner': recommendations['dinner']
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == "__main__":
     if not all(os.path.exists(f) for f in ["rf_breakfast.pkl", "rf_lunch.pkl", "rf_dinner.pkl", "label_encoders.pkl"]):

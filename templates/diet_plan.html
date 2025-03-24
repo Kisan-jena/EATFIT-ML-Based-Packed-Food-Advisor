@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutrition-Based Meal Plan</title>
+    <style>
+        /* 🌟 Global Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 25px;
+            border-radius: 15px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            width: 45%;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        h2 {
+            font-size: 28px;
+            color: #fff;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        label {
+            display: block;
+            font-size: 18px;
+            color: #fff;
+            margin-top: 10px;
+        }
+
+        input, select {
+            width: 80%;
+            padding: 10px;
+            margin: 8px auto;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            font-size: 16px;
+            color: #333;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            display: none;
+        }
+
+        .meal-section {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>🍽️ Nutrition-Based Meal Plan</h2>
+        
+        <form id="mealForm" onsubmit="getRecommendation(event)">
+            <label for="age">Age</label>
+            <input type="number" id="age" name="age" value="{{ age }}" readonly>
+            
+            <label for="weight">Weight (kg)</label>
+            <input type="number" step="0.1" id="weight" name="weight" value="{{ weight }}" readonly>
+            
+            <label for="height">Height (ft)</label>
+            <input type="number" step="0.1" id="height" name="height" value="{{ height }}" readonly>
+            
+            <label for="bmi">BMI</label>
+            <input type="number" step="0.01" id="bmi" name="bmi" value="{{ bmi }}" readonly>
+            
+            <label for="disease">Any Disease?</label>
+            <select id="disease" name="disease" required>
+                <option value="none">None</option>
+                <option value="diabetes">Diabetes</option>
+                <option value="hypertension">Hypertension</option>
+                <option value="obesity">Obesity</option>
+                <option value="cardiovascular">Cardiovascular Disease</option>
+            </select>
+            
+            <button type="submit">Get Meal Plan</button>
+        </form>
+        
+        <div id="result">
+            <div class="meal-section">
+                <h3>🌅 Breakfast</h3>
+                <p id="breakfast"></p>
+            </div>
+            <div class="meal-section">
+                <h3>🌞 Lunch</h3>
+                <p id="lunch"></p>
+            </div>
+            <div class="meal-section">
+                <h3>🌙 Dinner</h3>
+                <p id="dinner"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function getRecommendation(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(document.getElementById('mealForm'));
+            
+            try {
+                const response = await fetch('/get_diet_plan', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    document.getElementById('result').style.display = 'block';
+                    document.getElementById('breakfast').textContent = data.breakfast;
+                    document.getElementById('lunch').textContent = data.lunch;
+                    document.getElementById('dinner').textContent = data.dinner;
+                } else {
+                    alert(data.error || 'Failed to get recommendations');
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+    </script>
+</body>
+</html>

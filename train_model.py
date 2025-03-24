@@ -46,20 +46,28 @@ X_train, X_test, yb_train, yb_test = train_test_split(X, y_breakfast, test_size=
 _, _, yl_train, yl_test = train_test_split(X, y_lunch, test_size=0.2, random_state=42)
 _, _, yd_train, yd_test = train_test_split(X, y_dinner, test_size=0.2, random_state=42)
 
-# Train Random Forest Models
-rf_breakfast = RandomForestClassifier(n_estimators=200, random_state=42)
+# Train Random Forest Models with reduced complexity
+model_params = {
+    'n_estimators': 50,  # Reduced from 200
+    'max_depth': 10,     # Limit tree depth
+    'min_samples_split': 5,
+    'min_samples_leaf': 2,
+    'random_state': 42
+}
+
+rf_breakfast = RandomForestClassifier(**model_params)
 rf_breakfast.fit(X_train, yb_train)
 
-rf_lunch = RandomForestClassifier(n_estimators=200, random_state=42)
+rf_lunch = RandomForestClassifier(**model_params)
 rf_lunch.fit(X_train, yl_train)
 
-rf_dinner = RandomForestClassifier(n_estimators=200, random_state=42)
+rf_dinner = RandomForestClassifier(**model_params)
 rf_dinner.fit(X_train, yd_train)
 
 # Save Models & Encoders
-joblib.dump(rf_breakfast, "rf_breakfast.pkl")
-joblib.dump(rf_lunch, "rf_lunch.pkl")
-joblib.dump(rf_dinner, "rf_dinner.pkl")
-joblib.dump(label_encoders, "label_encoders.pkl")
+joblib.dump(rf_breakfast, "rf_breakfast.pkl", compress=3)
+joblib.dump(rf_lunch, "rf_lunch.pkl", compress=3)
+joblib.dump(rf_dinner, "rf_dinner.pkl", compress=3)
+joblib.dump(label_encoders, "label_encoders.pkl", compress=3)
 
 print("✅ Models trained and saved successfully!")
