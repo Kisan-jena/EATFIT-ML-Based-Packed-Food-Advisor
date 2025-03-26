@@ -1,0 +1,230 @@
+﻿Ingredients,Allergies/Problems Caused
+Milk,"Not safe for lactose intolerant individuals, may cause hives, rash, vomiting, abdominal cramps"
+Eggs,"May cause hives, rash, swelling of face, difficulty breathing, anaphylaxis"
+"Fish (e.g., bass, flounder, cod)","Not safe for fish allergy, may cause difficulty breathing, swelling, anaphylaxis"
+"Crustacean shellfish (e.g., crab, lobster, shrimp)","Not safe for shellfish allergy, may cause swelling of throat, difficulty breathing, anaphylaxis"
+"Tree nuts (e.g., almonds, walnuts,pine nuts, pecans)","Not safe for nut allergy, may cause severe allergic reactions, anaphylaxis"
+Peanuts,"Not safe for peanut allergy, highly allergenic, can cause anaphylaxis, breathing issues"
+Wheat,"Not safe for gluten intolerance (Celiac disease), may cause abdominal cramps, rash"
+Soybeans,"Not safe for soy allergy, may cause hives, wheezing, vomiting, gastrointestinal issues"
+Sesame,"Not safe for sesame allergy, may cause hives, anaphylaxis"
+Artificial Flavor,"May contain hidden allergens, may trigger allergic reactions in sensitive individuals"
+Natural Flavor,"May contain undeclared allergens like dairy, soy, or gluten"
+Spice,"Not safe for spice intolerance, may cause digestive issues, skin reactions"
+Color Added / Artificial Color,"May cause hyperactivity (in children), skin reactions"
+Casein (Milk Protein),"Not safe for lactose intolerant individuals, may cause digestive issues"
+Whey (Milk Protein),"Not safe for dairy allergy, may cause hives, abdominal cramps"
+Gluten,"Not safe for gluten intolerance, may cause Celiac disease symptoms"
+Lecithin (Soy),"Not safe for soy allergy, may cause hives, difficulty breathing"
+Sulfites,"May cause asthma symptoms, breathing issues, hives"
+Monosodium Glutamate (MSG),"May cause headaches, nausea, flushing"
+Aspartame,"May cause headaches, dizziness, sensitivity in individuals with PKU"
+Carrageenan,"May cause digestive discomfort, inflammatory reactions"
+High Fructose Corn Syrup,"May cause digestive issues, potential intolerance in some individuals"
+Dairy,"Not safe for lactose intolerant individuals, may cause hives, bloating, digestive issues"
+Celery,"May cause severe allergic reactions, skin rashes, anaphylaxis"
+Anchovies,"Not safe for fish allergy, may cause difficulty breathing, hives, swelling"
+Cocoa,"May cause allergic reactions, migraines, hives in sensitive individuals"
+Ghee,"Not safe for dairy allergy, may cause digestive issues, bloating"
+Mustard,"May cause severe allergic reactions, difficulty breathing, rash"
+Coconut,"Not safe for tree nut allergy, may cause swelling, hives, anaphylaxis"
+Strawberries,"May trigger oral allergy syndrome, itching, swelling in sensitive individuals"
+Oats,"Not safe for gluten-sensitive individuals (cross-contamination risk), may cause digestive issues"
+Pine Nuts,"Not safe for tree nut allergy, may cause anaphylaxis, hives"
+Pork,"May cause food intolerance, digestive issues in some individuals"
+Alcohol,"May trigger flushing, headaches, allergic reactions in sensitive individuals"
+Capsaicin (found in chili peppers),"Not recommended if less spice tolerance, may cause burning sensation, stomach irritation, acid reflux"
+Piperine (found in black pepper),"Not recommended if less spice tolerance, may cause irritation to the digestive tract"
+"Allicin (found in garlic, onions)","May cause stomach discomfort, acid reflux, irritation in sensitive individuals"
+Gingerol (found in ginger),"Not recommended if less spice tolerance, may cause heartburn, acid reflux"
+"Isothiocyanates (found in mustard, wasabi, horseradish)","Not recommended if less spice tolerance, may cause nasal irritation, burning sensation"
+"Eugenol (found in cloves, cinnamon)","May cause irritation to the mouth and throat, not recommended for sensitive individuals"
+Sichuan Pepper Alkaloids (found in Sichuan peppercorns),"Not recommended if less spice tolerance, may cause tingling/numbing sensation in the mouth"
+Curcumin (found in turmeric),"May cause digestive irritation in sensitive individuals, especially in large amounts"
+Cinnamaldehyde (found in cinnamon),May cause oral irritation and burning sensation in sensitive individuals
+"Sulfur Compounds (found in onions, garlic)","May cause bloating, stomach discomfort in sensitive individuals"
+Resiniferatoxin (found in extremely hot chili peppers),"Not recommended if less spice tolerance, may cause intense burning sensation and digestive distress"
+Almond,Nut Allergy
+Apple,Oral Allergy Syndrome
+Apricot,Stone Fruit Allergy
+Artichoke,Insulin Allergy
+Asparagus,Allium Allergy
+Avocado,Oral Allergy Syndrome
+Bamboo shoot,Histamine Allergy
+Banana,Banana Allergy
+Barley,Gluten Allergy
+Bean,Legume Allergy
+Blackberry,Salicylate Allergy
+Black-eyed bean,Legume Allergy
+Blueberry,Salicylate Allergy
+Bonito,Histamine Allergy
+Broad bean,Legume Allergy
+Broccoli,Broccoli allergy
+Brussels sprouts,Cruciferous Allergy
+Buckwheat,Gluten Allergy
+Burdock,Ragweed Allergy
+Butter,Milk allergy / Lactose intolerance
+Butter bean,Legume Allergy
+Buttermilk,Milk allergy / Lactose intolerance
+Button mushroom,Mushroom Allergy
+Cabbage,Cruciferous Allergy
+Cacao bean,
+Canola oil,
+Carrot,Hypersensitivity
+Casein,Milk allergy / Lactose intolerance
+Cattle,Alpha-gal Syndrome
+Cauliflower,Cruciferous Allergy
+Celery,Hypersensitivity
+Cheese,Milk allergy / Lactose intolerance
+Cherry,Stone Fruit Allergy
+Chestnut,Nut Allergy
+Chicken,Poultry Allergy
+Chicory,Insulin Allergy
+Chinese cabbage,Cruciferous Allergy
+Coconut oil,
+Coffee bean,Ochratoxin Allergy
+Corn,Corn Allergy
+Corn oil,
+Cotton seed,Seed Allergy
+Cranberry,Salicylate Allergy
+Cream,Milk allergy / Lactose intolerance
+Crustaceans,Shellfish Allergy
+Cucumber ,
+Custard,Milk allergy / Lactose intolerance
+Date,Oral Allergy Syndrome
+Deer,Alpha-gal Syndrome
+Duck,Poultry Allergy
+Eel,Fish Allergy
+Egg plant,Nightshade Allergy
+Eggs,Poultry Allergy
+Endive,Insulin Allergy
+Fructose,Sugar Allergy / Intolerance
+Garlic,Allium Allergy
+Ghrkin,
+Ginger,Histamine Allergy
+Ginkgo nut,Nut Allergy
+Globfish,Fish Allergy
+Glucose,Sugar Allergy / Intolerance
+Goat,Alpha-gal Syndrome
+Grape,LTP Allergy
+Grapefruit,Citrus Allergy
+Grapeseed oil,
+Green soybean,Legume Allergy
+Groundnut oil,
+Guava,Oral Allergy Syndrome
+Honey,Honey Allergy
+Hop,Beer Allergy
+Horse,Alpha-gal Syndrome
+Horse Mackerel,Fish Allergy
+Horseradish,Cruciferous Allergy
+Huckleberry,Salicylate Allergy
+Ice cream,Milk allergy / Lactose intolerance
+Japanese pear,Oral Allergy Syndrome
+Japanese persimmon,
+Japanese plum,Stone Fruit Allergy
+Kale,Cruciferous Allergy
+Kidney bean,Legume Allergy
+Kiwi,Oral Allergy Syndrome
+Konjac,Potato Allergy
+Kyona,Cruciferous Allergy
+Lactose,Lactose Intolerance
+Leek,Allium Allergy
+Lemon,Citrus Allergy
+Lentil,Legume Allergy
+Lettuce ,LTP Allergy
+Lima bean,Legume Allergy
+Lime,Citrus Allergy
+Loquat,Oral Allergy Syndrome
+Mackerel,Fish Allergy
+Makuwauri  melon,
+Mango,Oral Allergy Syndrome
+Melons,
+Milk,Milk allergy / Lactose intolerance
+Mineral water,Aquagenic Urticaria
+Mitsuba,Hypersensitivity
+Mume plum,Stone Fruit Allergy
+Mustard oil,
+Mustard Spinach,Cruciferous Allergy
+Nectarine,Stone Fruit Allergy
+Nira,Allium Allergy
+Okra,Histamine Allergy
+Olive oil,
+Onion,Allium Allergy
+Orange,Citrus Allergy
+Orange pulp,Citrus Allergy
+Papaya,Oral Allergy Syndrome
+Parsley,Hypersensitivity
+Parsnip,Hypersensitivity
+Passion fruit,Oral Allergy Syndrome
+Peach,Stone Fruit Allergy
+Peanut,Peanut Allergy
+Pear,Oral Allergy Syndrome
+Peas,Legume Allergy
+Peas,Legume Allergy
+Pecan,Nut Allergy
+Pegia,Legume Allergy
+Peppermint,Mint Allergy
+Percifomes,Fish Allergy
+Pig,Alpha-gal Syndrome
+Pineapple,Oral Allergy Syndrome
+Popcorn,Corn Allergy
+Potato,Potato Allergy
+Prune,Stone Fruit Allergy
+Pumpkin,
+Qing-geng-cai,Cruciferous Allergy
+Quince,Oral Allergy Syndrome
+Radish leaf,
+Radish root,Hypersensitivity
+Rapeseed,Seed Allergy
+Raspberry,Salicylate Allergy
+Rice,Rice Allergy
+Ricebran oil,
+Royal Jelly,Honey Allergy
+Rye,Gluten Allergy
+Safflower seed,Seed Allergy
+Salmon,Fish Allergy
+Salsify,Insulin Allergy
+Sansho,Pepper Allergy
+Sea Bass,Fish Allergy
+Sea Bream,Fish Allergy
+Sesame seed,Seed Allergy
+Shallot,Allium Allergy
+Sheep,Alpha-gal Syndrome
+Shelled mollusc,Fish Allergy
+Shiitake  mushroom,Mushroom Allergy
+Shungiku,Insulin Allergy
+Sour cream,Milk allergy / Lactose intolerance
+Soybean,Soy Allergy
+Spearmint,Mint Allergy
+Spinach,Histamine Allergy
+Squash,
+Strawberry,Salicylate Allergy
+Sugar,Sugar Allergy / Intolerance
+Sugar beet,Sugar Allergy / Intolerance
+Sugarcane,Sugar Allergy / Intolerance
+Sultani,Legume Allergy
+Sultapya,Legume Allergy
+Sunflower oil,
+Sunflower seed,Seed Allergy
+Sweet corn,Corn Allergy
+Sweet Pepper,Nightshade Allergy
+Sweet potato,Potato Allergy
+Taro,Potato Allergy
+Tea,Tannin Allergy
+Tetraodontiformes,Fish Allergy
+Tomato,Nightshade Allergy
+Trout,Fish Allergy
+Tuna,Fish Allergy
+Turkey,Poultry Allergy
+Turnip leaf,
+Turnip root,Thyroid
+Vegetable oil,
+Walnut,Nut Allergy
+Water melon,
+Watercress,
+Welsh,Allium Allergy
+Wheat,Gluten Allergy
+Whey,Milk allergy / Lactose intolerance
+White bean,Legume Allergy
+Yam,Potato Allergy
+Yogurt ,Milk allergy / Lactose intolerance

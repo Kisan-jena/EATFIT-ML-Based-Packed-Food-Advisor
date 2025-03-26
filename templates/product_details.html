@@ -39,7 +39,7 @@
         .card img {
             border-radius: 10px;
             max-height: 350px;
-            object-fit: cover;
+            object-fit: contain;
             width: 100%;
         }
 
@@ -74,12 +74,54 @@
             font-size: 1.4rem;
             padding: 10px 20px;
             border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .score-box {
+            font-size: 1.4rem;
+            padding: 5px 15px;
+            border-radius: 5px;
+            min-width: 30px;
+            text-align: center;
+            border: 2px solid;
+            margin-right: 5px;
         }
 
         .badge-success {
             background-color: #28a745;
         }
-
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            background: #f9f9f9;
+            color: black;
+            text-align: left;
+            max-width: 600px;
+            margin: auto;
+            display: none;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }        
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+        .section {
+            margin-bottom: 15px;
+        }
+        .section h3 {
+            color: #ff5e62;
+            margin-bottom: 5px;
+        }
+        .allergy-warning {
+            background: #ffe6e6;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            border-left: 5px solid #ff5e62;
+        }
         .btn-alternative {
             background-color: #ffc107;
             border: none;
@@ -102,7 +144,7 @@
         <h1>Product Nutrition Details</h1>
 
         <div class="card">
-            <img src="{{ url_for('static', filename='uploads/' + image) }}" alt="Uploaded Product Image" class="card-img-top">
+           <img src="{{ url_for('static', filename='uploads/' + image) }}" alt="Uploaded Product Image" class="card-img-top">
 
             <div class="card-body">
                 <div class="nutrition-info">
@@ -116,14 +158,48 @@
                     <p><strong>Protein:</strong> {{ nutrition.get('protein', 'N/A') }} g</p>
                     <p><strong>Salt:</strong> {{ nutrition.get('salt', 'N/A') }} g</p>
                 </div>
+                
 
-                <h4 class="mt-4">Nutri-Score: <span class="badge badge-success">{{ score }}</span></h4>
+                <div class="d-flex align-items-center mt-4">
+                    <h4 class="me-3">Nutri-Score: 
+                        <span class="score-box" id="nutri-score-badge" data-score="{{ score }}">{{ score }} </span> <span>/5</span>
+                    </h4>
+                    <button class="btn btn-warning btn-sm">Check Alternate Products</button>
+                </div>
+
+
+                <h4 class="mt-4">
+                    <strong>Product Review:</strong> <span style="font-weight: normal;">{{ review }}</span>
+                </h4>
+                <h4 class="mt-4">
+                    <strong>Possible Allergies:</strong> <span style="font-weight: normal;">{{ allergies if allergies else "No allergens detected." }}</span>
+                </h4>
+
 
                 <a href="/" class="btn btn-back">Upload Another Product</a>
             </div>
         </div>
     </div>
-
+    
 </body>
-
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let badge = document.getElementById("nutri-score-badge");
+        let score = parseInt(badge.dataset.score);
+        
+        if (score >= 4) {
+            badge.style.backgroundColor = "green";
+            badge.style.color = "white";
+            badge.style.borderColor = "green";
+        } else if (score === 3) {
+            badge.style.backgroundColor = "yellow";
+            badge.style.color = "black";
+            badge.style.borderColor = "yellow";
+        } else {
+            badge.style.backgroundColor = "red";
+            badge.style.color = "white";
+            badge.style.borderColor = "red";
+        }
+    });
+</script>
 </html>
