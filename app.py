@@ -2,7 +2,10 @@ import os
 import io
 import cv2
 import pytesseract
+import requests
 import re
+from werkzeug.utils import secure_filename
+
 import numpy as np
 import pandas as pd
 from flask import Flask, render_template, request, redirect, url_for, flash, session, send_file, jsonify
@@ -13,6 +16,8 @@ from sklearn.model_selection import train_test_split
 from werkzeug.utils import secure_filename
 import time
 from Diet_plan import recommend_meal, calculate_bmi
+import pandas as pd
+import sys
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -20,7 +25,7 @@ app.secret_key = os.urandom(24)
 # MySQL configurations
 app.config['MYSQL_HOST'] = '127.0.0.1'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Kisanjena@123'
+app.config['MYSQL_PASSWORD'] = 'root'
 app.config['MYSQL_DB'] = 'user_database'
 
 mysql = MySQL(app)
@@ -33,7 +38,9 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 # Ensure upload folder exists
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
-
+def save_barcode(barcode):
+    """Save barcode in the session."""
+    session["barcode"] = barcode
 # Load and preprocess the dataset
 # try:
 #     data = pd.read_csv("foodpr_cleaned_dataset (3).csv")
@@ -58,6 +65,37 @@ if not os.path.exists(UPLOAD_FOLDER):
 #     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 #     rf = RandomForestClassifier(n_estimators=100, random_state=42)
 #     rf.fit(X_train, y_train)
+df_allergies = pd.read_csv("food allergies.csv")  # Ensure this CSV contains "Ingredients" and "Allergies/Problems Caused" columns
+
+
+# Function to map ingredients to allergies
+def map_allergens_to_ingredients(ingredient_list):
+    if not ingredient_list:
+        return "No ingredients found to check."
+    
+    # Convert all ingredient names to lowercase for case-insensitive matching
+    ingredient_list_lower = [ing.lower() for ing in ingredient_list]
+
+    # Find matching allergies
+    mapped_allergies = df_allergies[df_allergies["Ingredients"].str.lower().isin(ingredient_list_lower)]
+    
+    if not mapped_allergies.empty:
+        allergy_warnings = [
+            f"{row['Ingredients']}: {row['Allergies/Problems Caused']}"
+            for _, row in mapped_allergies.iterrows()
+        ]
+        print("\nAllergy Warnings:", allergy_warnings)  # Debugging
+        return "\n".join(allergy_warnings)
+
+    return "No allergens found for these ingredients."
+
+
+# Function to check allergy (barcode is used once and passed forward)
+def check_allergy(barcode):
+    print("Received barcode in check_allergy:", barcode)  # Debugging
+
+    ingredient_list = fetch_ingredients(barcode)  # Fetch ingredients once
+    return map_allergens_to_ingredients(ingredient_list)  # Check allergies using fetched ingredients
 
 # Function to check allowed file types
 def allowed_file(filename):
@@ -298,6 +336,167 @@ def process_with_config(image_path, config_idx):
     )
     
     return parse_nutrition(text.lower())
+
+sys.stdout.reconfigure(encoding='utf-8')
+
+df = pd.read_csv(r"C:/Users/Priyanka/Downloads/EATFIT-review-1/EATFIT-review-1/nutrients-dataset.csv", encoding="utf-8-sig")
+
+def fetch_health_data(user_id):
+    print(f"[DEBUG] fetch_health_data() called with user_id: {user_id}")
+
+    cur = mysql.connection.cursor()
+   
+    query = """
+    SELECT h.height, h.weight, h.bmi, h.age, h.diabetes, h.bp, h.cholesterol
+    FROM health_data h
+    JOIN users u ON h.user_id = u.id
+    WHERE u.id = %s
+    """
+    cur.execute(query, (user_id,))
+    health_data = cur.fetchone()
+   # print("Fetched health data:", health_data)  # Debugging
+   
+    cur.close()
+
+    if health_data:
+        # Convert tuple to dictionary
+        keys = ["height", "weight", "bmi", "age", "diabetes", "bp", "cholesterol"]
+        health_data_dict = dict(zip(keys, health_data))
+        print("Converted Health Data (Dict):", health_data_dict)  # Debugging
+        print("Fetched Age:", health_data_dict.get("age"))         
+        return health_data_dict  # Return as dictionary instead of tuple
+    print("[DEBUG] No health data found for user_id:", user_id)
+    return None    
+
+def get_age_column(user_id):
+    print(f"[DEBUG] get_age_column() received user_id: {user_id}")  # Check if it's correct
+    health_data = fetch_health_data(user_id)
+    if not health_data:
+        print("Error: No health data found for user_id", user_id)
+        return None  
+
+    age = health_data.get("age")
+    print(f"[DEBUG] Extracted Age from Health Data: {age}")  # Check correct extraction
+
+    if age is None:
+        print("Error: Age not found in health data")
+        return None
+    if 0 <= age <= 6:
+        return "0-6 years"
+    elif 7 <= age <= 12:
+        return "7-12 years"
+    elif 13 <= age <= 18:
+        return "13-18 years"
+    else:
+        return "Adults"
+# Function to fetch ingredients
+def fetch_ingredients(barcode):
+    api_url = f"https://world.openfoodfacts.org/api/v2/product/{barcode}.json"
+    print("Fetching barcode:", barcode)  # Debugging
+    
+    try:
+        response = requests.get(api_url)
+        data = response.json()
+        print("\nAPI Response (Ingredients):", data)  # Debugging
+        
+        if data.get("status") == 1:  # Product found
+            ingredients_text = data["product"].get("ingredients_text", "")
+            ingredient_list = [ing.strip() for ing in ingredients_text.split(",")] if ingredients_text else []
+            print("\nIngredients Found:", ingredient_list)
+            return ingredient_list
+        else:
+            print("\nProduct not found.")
+            return []
+    
+    except Exception as e:
+        print("\nError fetching ingredients:", e)
+        return []
+def fetch_nutrients(barcode):
+    api_url = f"https://world.openfoodfacts.org/api/v2/product/{barcode}.json"
+    try:
+        response = requests.get(api_url)
+        data = response.json()
+        
+        if data.get("status") == 1:  # Product found
+            nutriments = data["product"].get("nutriments", {})
+            return {
+                "fat": nutriments.get("fat_100g", 0),
+                "saturated_fat": nutriments.get("saturated-fat_100g", 0),
+                "carbohydrates": nutriments.get("carbohydrates_100g", 0),
+                "sugar": nutriments.get("sugars_100g", 0),
+                "fiber": nutriments.get("fiber_100g", 0),
+                "protein": nutriments.get("proteins_100g", 0),
+                "salt": nutriments.get("salt_100g", 0),
+                "cholesterol": nutriments.get("cholesterol_100g", 0),
+                "trans_fat": nutriments.get("trans-fat_100g", 0)
+            }
+        else:
+            return None
+    except Exception as e:
+        return None
+
+
+
+def categorize_bmi(user_id):
+    health_data = fetch_health_data(user_id)
+    if not health_data:
+        return None  # Return None if user not found
+    
+    bmi = health_data.get["bmi"]    
+    if bmi < 18.5:
+        return "Underweight (BMI < 18.5)"
+    elif 18.5 <= bmi <= 24.9:
+        return "Normal (BMI 18.5-24.9)"
+    elif 25 <= bmi <= 29.9:
+        return "Overweight (BMI 25-29.9)"
+    else:
+        return "Obese (BMI 30+)"
+
+def extract_numeric(value):
+    return float(re.sub(r"[^\d.]", "", value))
+
+def check_product_safety(nutrition, health_data,user_id):
+    print("Received Nutrition Data:", nutrition)
+    print("Received Health Data:", health_data)
+
+    age_column = get_age_column(user_id)
+    print("Age Column Selected:", age_column)
+
+    review = []
+
+    for nutrient, value in nutrition.items():
+        print(f"Checking: {nutrient} with value {value}")
+
+        row = df[df["Nutrient/chemicals to avoid"].str.lower() == nutrient.replace("_", " ")]
+        if not row.empty:
+            limit_str = str(row[age_column].values[0]).strip()
+            print(f"Limit for {nutrient}: {limit_str}")
+
+            # Extract numeric values correctly
+            if "avoid" in limit_str.lower() or limit_str == "0" or re.match(r"0\s*[gmg]*", limit_str, re.IGNORECASE):
+                limit = 0  # Explicitly set limit to 0 for "Avoid" cases
+            else:
+                if "-" in limit_str:  # Handling range values like "≤ 10-15g"
+                    parts = limit_str.split("-")
+                    lower_bound = extract_numeric(parts[0])
+                    upper_bound = extract_numeric(parts[1]) if len(parts) > 1 else lower_bound
+                    limit = upper_bound  # Take the higher end of the range for ≤ comparisons
+                else:
+                    limit = extract_numeric(limit_str)
+
+            # Now apply the conditions correctly
+            if limit_str.startswith("≤") or limit == 0:
+                if value > limit:
+                    review.append(f"{nutrient} exceeds limit ({value}g > {limit}g), hence this product is not recommended for you.")
+            elif limit_str.startswith("≥"):
+                if value < limit:
+                    continue
+
+    if not review:
+        return "All nutrients are within safe limits."
+
+    return " ".join(review)
+
 
 # Routes for user management
 @app.route('/forgot_password', methods=['GET', 'POST'])
@@ -542,13 +741,18 @@ def upload_file():
 
         filename = secure_filename(file.filename)
         upload_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        
+        barcode = request.form.get("barcode")  # Get barcode from form
+        if not barcode:
+            flash("Barcode is required!", "danger")
+            return redirect(url_for("upload_file"))        
         try:
             file.save(upload_path)
             session['file_path'] = upload_path
             session['filename'] = filename
             session['current_config_idx'] = 0
             session['nutrition'] = process_with_config(upload_path, 0)
+            save_barcode(barcode)  # Save barcode in session
+
             return redirect(url_for('verify_extraction'))
             
         except Exception as e:
@@ -603,15 +807,46 @@ def verify_extraction():
         config_number=session.get('current_config_idx', 0) + 1
     )
 
-@app.route("/product_details")
+@app.route("/product_details", methods=["GET","POST"])
 def product_details():
+    print("Session data:", session)  # Debugging to check session values
+   
+    barcode = request.form.get("barcode")
+
     if 'filename' not in session or 'nutrition' not in session:
         return redirect(url_for('upload_file'))
+    if 'user_id' not in session:  # Check if user_id exists in session
+        flash('You must log in first', 'danger')
+        return redirect(url_for('login'))
+    user_id = session.get("user_id")   #  Use user_id instead
+    print("Fetched user_id:", user_id)  # Debugging
+    if not user_id:
+        return "User ID not found in session.", 400
+    health_data = fetch_health_data(user_id) 
+    print("Fetched health data:", health_data)  # Debugging
     
+
+    
+    if not health_data:
+        return "User health data not found", 404
+    barcode = session.get("barcode")
+    if not barcode:
+        flash("Barcode missing!", "danger")
+        return redirect(url_for("upload_file"))
+    allergies = check_allergy(barcode) if barcode else "No allergens detected."
+
+    nutrition = session.get('nutrition', {})
+    review = check_product_safety(nutrition, health_data,user_id)
+   
     return render_template("product_details.html", 
                       image=session['filename'],
                       nutrition=session.get('nutrition', {}),
-                      score=session.get('nutri_grade'))
+                      score=session.get('nutri_grade'),
+                      review = review,
+                      health_data=health_data,
+                      allergies=allergies  # Include health data for display
+
+                    )
 
 @app.route("/diet_recommendation")
 def diet_recommendation():
@@ -653,7 +888,7 @@ def get_meal():
         height = float(data["height"])
         disease = data["disease"].strip()
 
-        print(f"🔍 User Input -> Age: {age}, Weight: {weight}, Height: {height}, Disease: '{disease}'")
+        print(f"User Input -> Age: {age}, Weight: {weight}, Height: {height}, Disease: '{disease}'")
 
         bmi, bmi_category, breakfast, lunch, dinner = recommend_meal(age, weight, height, disease)
 
@@ -666,7 +901,7 @@ def get_meal():
         })
 
     except Exception as e:
-        print(f"❌ Error: {e}")
+        print(f" Error: {e}")
         return jsonify({"error": str(e)})
 
 # Routes for diet plan
@@ -720,7 +955,7 @@ def get_diet_plan():
 
 if __name__ == "__main__":
     if not all(os.path.exists(f) for f in ["rf_breakfast.pkl", "rf_lunch.pkl", "rf_dinner.pkl", "label_encoders.pkl"]):
-        print("❌ Model files missing! Ensure .pkl files are in the project folder.")
+        print(" Model files missing! Ensure .pkl files are in the project folder.")
     else:
-        print("✅ All model files are present.")
+        print("All model files are present.")
     app.run(debug=True, port=5001)

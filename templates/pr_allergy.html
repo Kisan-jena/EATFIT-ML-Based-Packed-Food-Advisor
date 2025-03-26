@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Allergy Scanner</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: white;  /* White Background */
+            text-align: center;
+            padding: 50px;
+            color: black;
+        }
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: #ff5e62;
+        }
+        input {
+            padding: 10px;
+            width: 300px;
+            font-size: 18px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            padding: 12px 20px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            background-color: #ff5e62;
+            color: white;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #ff3b41;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            background: #f9f9f9;
+            color: black;
+            text-align: left;
+            max-width: 600px;
+            margin: auto;
+            display: none;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+        .section {
+            margin-bottom: 15px;
+        }
+        .section h3 {
+            color: #ff5e62;
+            margin-bottom: 5px;
+        }
+        .allergy-warning {
+            background: #ffe6e6;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            border-left: 5px solid #ff5e62;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🔍 Allergy Scanner</h1>
+    <p>Enter a product barcode to check for allergens:</p>
+
+    <input type="text" id="barcode" placeholder="Enter Barcode Number">
+    <button onclick="checkBarcode()">Check</button>
+
+    <div id="result"></div>
+
+    <script>
+        function checkBarcode() {
+            let barcode = document.getElementById("barcode").value;
+            let resultDiv = document.getElementById("result");
+
+            if (!barcode) {
+                resultDiv.innerHTML = "<p class='error'>⚠️ Please enter a barcode.</p>";
+                resultDiv.style.display = "block";
+                return;
+            }
+
+            fetch("/check_barcode", {
+                method: "POST",
+                body: new URLSearchParams({ "barcode": barcode }),
+                headers: { "Content-Type": "application/x-www-form-urlencoded" }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    resultDiv.innerHTML = `<p class='error'>❌ ${data.error}</p>`;
+                } else {
+                    let ingredientsList = data.ingredients.length 
+                        ? data.ingredients.join(", ") 
+                        : "No ingredients found.";
+
+                    let allergyList = data.allergies.length 
+                        ? data.allergies.map(a => `<div class="allergy-warning">⚠️ <b>${a.Ingredients}</b>: ${a.Allergies}</div>`).join("")
+                        : "<p>No known allergens found. ✅</p>";
+
+                    resultDiv.innerHTML = `
+                        <div class="section">
+                            <h3>🍽️ Ingredients Found:</h3>
+                            <p>${ingredientsList}</p>
+                        </div>
+                        <div class="section">
+                            <h3>🚨 Allergy Warnings:</h3>
+                            ${allergyList}
+                        </div>
+                    `;
+                }
+                resultDiv.style.display = "block";
+            })
+            .catch(error => {
+                resultDiv.innerHTML = "<p class='error'>⚠️ Error fetching data.</p>";
+                resultDiv.style.display = "block";
+            });
+        }
+    </script>
+
+</body>
+</html>

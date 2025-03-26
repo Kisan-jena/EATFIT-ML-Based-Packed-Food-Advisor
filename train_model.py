@@ -70,4 +70,4 @@ joblib.dump(rf_lunch, "rf_lunch.pkl", compress=3)
 joblib.dump(rf_dinner, "rf_dinner.pkl", compress=3)
 joblib.dump(label_encoders, "label_encoders.pkl", compress=3)
 
-print("✅ Models trained and saved successfully!")
+print(" Models trained and saved successfully!")
