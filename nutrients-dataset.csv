@@ -1,0 +1,176 @@
+﻿Sr. No.,TYPE,Nutrient/chemicals to avoid,0-6 years,7-12 years,13-18 years,Adults,Strictly Avoid?
+1,Type 1 diabetes,Carbohydrates,≤ 15-30g,≤ 30-45g,≤ 45-60g,≤ 45-60g,"No, but limit refined carbs"
+,Type 1 diabetes,Sugar,≤ 5g,≤ 8g,≤ 10g,≤ 10-15g,Yes (Minimize added sugar)
+,Type 1 diabetes,Saturated Fat,≤ 2g,≤ 3g,≤ 4g,≤ 5g,Limit processed fats
+,Type 1 diabetes,Trans Fat,0g (Avoid),0g (Avoid),0g (Avoid),0g (Avoid),Yes (Fully avoid)
+,Type 1 diabetes,Sodium (Salt),≤ 300mg,≤ 400mg,≤ 500mg,≤ 600mg,Limit high-sodium processed foods
+,Type 1 diabetes,Cholesterol,≤ 30mg,≤ 50mg,≤ 70mg,≤ 100mg,Limit excessive intake
+,Type 1 diabetes,Fiber,≥ 2g,≥ 3g,≥ 4g,≥ 5g,No (Higher intake is better)
+,Type 1 diabetes,Protein,≥ 3g,≥ 5g,≥ 7g,≥ 8g,No (Healthy protein recommended)
+,Type 1 diabetes,Glycemic Index,Prefer <55,Prefer <55,Prefer <55,Prefer <55,Avoid high GI foods (>70)
+,Type 1 diabetes,"Artificial Sweeteners (Aspartame, Saccharin, Sucralose, Acesulfame K)",Avoid,Avoid,Limit,Limit,Yes (Linked to insulin resistance)
+,,,,,,,
+2,Type 2 diabetes,Carbohydrates,≤ 10-20g,≤ 20-40g,≤ 40-50g,≤ 30-45g,"No, but limit refined carbs"
+,Type 2 diabetes,Sugar,≤ 3g,≤ 5g,≤ 8g,≤ 10g,"Yes, minimize added sugar"
+,Type 2 diabetes,Saturated Fat,≤ 2g,≤ 3g,≤ 4g,≤ 5g,Limit processed fats
+,Type 2 diabetes,Trans Fat,0g (Avoid),0g (Avoid),0g (Avoid),0g (Avoid),"Yes, fully avoid"
+,Type 2 diabetes,Sodium (Salt),≤ 250mg,≤ 350mg,≤ 450mg,≤ 500mg,Limit high-sodium processed foods
+,Type 2 diabetes,Cholesterol,≤ 20mg,≤ 40mg,≤ 60mg,≤ 100mg,Limit excessive intake
+,Type 2 diabetes,Fiber,≥ 3g,≥ 4g,≥ 5g,≥ 5g,"No, higher intake is better"
+,Type 2 diabetes,Protein,≥ 3g,≥ 5g,≥ 7g,≥ 8g,"No, healthy protein recommended"
+,Type 2 diabetes,Glycemic Index,Prefer <50,Prefer <50,Prefer <55,Prefer <55,Avoid high GI foods (>70)
+,Type 2 diabetes,"Artificial Sweeteners (Aspartame, Saccharin, Sucralose, Acesulfame K)",Avoid,Avoid,Limit,Limit,"Yes, linked to insulin resistance"
+,Type 2 diabetes,High-Fructose Corn Syrup (HFCS),Avoid,Avoid,Avoid,Avoid,"Yes, can spike blood sugar"
+,Type 2 diabetes,"Artificial Preservatives (BHA, BHT, Sodium Benzoate)",Avoid,Avoid,Limit,Limit,May trigger inflammation
+,Type 2 diabetes,"Artificial Colors (Red 40, Yellow 5, Blue 1, etc.)",Avoid,Avoid,Limit,Limit,May impact metabolism
+,Type 2 diabetes,"Processed/Refined Carbs (White Flour, White Rice, etc.)",Avoid,Avoid,Limit,Limit,"Yes, causes blood sugar spikes"
+,,,,,,,
+3,hypertension(high bp),Sodium (Salt),≤ 150mg,≤ 200mg,≤ 300mg,≤ 400mg,Yes (Excess sodium raises BP)
+,hypertension(high bp),Potassium,≥ 200mg,≥ 300mg,≥ 400mg,≥ 500mg,"No, higher intake is beneficial"
+,hypertension(high bp),Cholesterol,≤ 20mg,≤ 40mg,≤ 60mg,≤ 100mg,Limit excessive intake
+,hypertension(high bp),Saturated Fat,≤ 2g,≤ 3g,≤ 4g,≤ 5g,Limit processed fats
+,hypertension(high bp),Trans Fat,0g (Avoid),0g (Avoid),0g (Avoid),0g (Avoid),Yes (Fully avoid)
+,hypertension(high bp),Sugar,≤ 3g,≤ 5g,≤ 8g,≤ 10g,Limit added sugar
+,hypertension(high bp),Refined Carbohydrates,Avoid,Avoid,Limit,Limit,Yes (Leads to weight gain and BP spikes)
+,hypertension(high bp),Fiber,≥ 3g,≥ 4g,≥ 5g,≥ 5g,"No, higher intake is beneficial"
+,hypertension(high bp),Protein,≥ 3g,≥ 5g,≥ 7g,≥ 8g,"No, but prefer plant-based proteins"
+,hypertension(high bp),Caffeine,Limit,Limit,Limit,≤ 200mg,Yes (Excess can raise BP)
+,hypertension(high bp),"Artificial Preservatives (BHA, BHT, Sodium Benzoate)",Avoid,Avoid,Limit,Limit,Yes (May trigger inflammation)
+,hypertension(high bp),"Artificial Colors (Red 40, Yellow 5, Blue 1, etc.)",Avoid,Avoid,Limit,Limit,Yes (May impact metabolism)
+,hypertension(high bp),"Processed/Refined Carbs (White Flour, White Rice, etc.)",Avoid,Avoid,Limit,Limit,Yes (Causes blood sugar and BP spikes)
+,,,,,,,
+4,low bp,Sodium (Salt),≥ 200mg,≥ 300mg,≥ 400mg,≥ 500mg,"No, moderate intake is beneficial"
+,low bp,Potassium,≤ 200mg,≤ 300mg,≤ 400mg,≤ 500mg,"Yes, excess may lower BP further"
+,low bp,Cholesterol,≤ 30mg,≤ 50mg,≤ 70mg,≤ 100mg,Limit excessive intake
+,low bp,Saturated Fat,≤ 2g,≤ 3g,≤ 4g,≤ 5g,Limit processed fats
+,low bp,Trans Fat,0g (Avoid),0g (Avoid),0g (Avoid),0g (Avoid),Yes (Fully avoid)
+,low bp,Sugar,≤ 5g,≤ 8g,≤ 10g,≤ 10-15g,Limit excess sugar
+,low bp,Refined Carbohydrates,Limit,Limit,Limit,Limit,Yes (May cause sudden blood sugar drops)
+,low bp,Fiber,≤ 3g,≤ 4g,≤ 5g,≤ 5g,"Yes, excess fiber may slow digestion and lower BP"
+,low bp,Protein,≥ 3g,≥ 5g,≥ 7g,≥ 8g,"No, adequate intake is beneficial"
+,low bp,Caffeine,≤ 100mg,≤ 150mg,≤ 200mg,≤ 300mg,"No, moderate intake can help raise BP"
+,low bp,"Artificial Preservatives (BHA, BHT, Sodium Benzoate)",Avoid,Avoid,Limit,Limit,Yes (May trigger inflammation)
+,low bp,"Artificial Colors (Red 40, Yellow 5, Blue 1, etc.)",Avoid,Avoid,Limit,Limit,Yes (May impact metabolism)
+,low bp,"Processed/Refined Carbs (White Flour, White Rice, etc.)",Limit,Limit,Limit,Limit,Yes (May cause unstable BP)
+,,,,,,,
+5,secondary hypertension,Sodium (Salt),≤ 150mg,≤ 200mg,≤ 300mg,≤ 400mg,Yes (Excess sodium worsens hypertension)
+,secondary hypertension,Potassium,≥ 200mg,≥ 300mg,≥ 400mg,≥ 500mg,"No, higher intake is beneficial"
+,secondary hypertension,Cholesterol,≤ 30mg,≤ 50mg,≤ 70mg,≤ 100mg,Limit excessive intake
+,secondary hypertension,Saturated Fat,≤ 2g,≤ 3g,≤ 4g,≤ 5g,Limit processed fats
+,secondary hypertension,Trans Fat,0g (Avoid),0g (Avoid),0g (Avoid),0g (Avoid),Yes (Fully avoid)
+,secondary hypertension,Sugar,≤ 3g,≤ 5g,≤ 8g,≤ 10g,Limit added sugar
+,secondary hypertension,Refined Carbohydrates,Avoid,Avoid,Limit,Limit,Yes (Leads to weight gain and worsens BP)
+,secondary hypertension,Fiber,≥ 3g,≥ 4g,≥ 5g,≥ 5g,"No, higher intake is beneficial"
+,secondary hypertension,Protein,≥ 3g,≥ 5g,≥ 7g,≥ 8g,"No, but prefer plant-based proteins"
+,secondary hypertension,Caffeine,Limit,Limit,Limit,≤ 200mg,Yes (Excess can raise BP)
+,secondary hypertension,"Artificial Preservatives (BHA, BHT, Sodium Benzoate)",Avoid,Avoid,Limit,Limit,Yes (May trigger inflammation)
+,secondary hypertension,"Artificial Colors (Red 40, Yellow 5, Blue 1, etc.)",Avoid,Avoid,Limit,Limit,Yes (May impact metabolism)
+,secondary hypertension,"Processed/Refined Carbs (White Flour, White Rice, etc.)",Avoid,Avoid,Limit,Limit,Yes (Causes blood sugar and BP spikes)
+,,,,,,,
+6,underweight(bmi<18.5),Sodium (Salt),≤ 150mg,≤ 200mg,≤ 300mg,"≤ 2,300mg",Limit (Excess sodium can cause fluid retention)
+,underweight(bmi<18.5),Potassium,≥ 200mg,≥ 300mg,≥ 400mg,"≥ 4,700mg",No (Supports fluid balance and healthy muscle function)
+,underweight(bmi<18.5),Cholesterol,≤ 30mg,≤ 50mg,≤ 70mg,≤ 200mg,Limit (Focus on healthy fats for weight gain)
+,underweight(bmi<18.5),Saturated Fat,≤ 2g,≤ 3g,≤ 4g,≤ 5g,Limit (Use healthy fats like olive oil or avocado)
+,underweight(bmi<18.5),Trans Fat,0g (Avoid),0g (Avoid),0g (Avoid),0g (Avoid),"Yes (Avoid fully; raises LDL cholesterol, harmful for heart health)"
+,underweight(bmi<18.5),Sugar,≤ 5g,≤ 8g,≤ 10g,≤ 10-15g,"Limit (Avoid excess sugar, prioritize nutrient-dense foods)"
+,underweight(bmi<18.5),"Refined Carbohydrates (White Flour, White Rice)",Limit,Limit,Limit,Limit,Yes (Refined carbs may cause blood sugar imbalances)
+,underweight(bmi<18.5),Fiber,≥ 3g,≥ 4g,≥ 5g,≥ 25g,No (Fiber helps digestion and supports healthy weight gain)
+,underweight(bmi<18.5),Protein,≥ 5g,≥ 8g,≥ 10g,≥ 50g,No (Important for muscle maintenance and weight gain)
+,underweight(bmi<18.5),Caffeine,Limit,Limit,Limit,≤ 200mg,Yes (Excess caffeine can reduce appetite and disrupt sleep)
+,underweight(bmi<18.5),Iron,≥ 5mg,≥ 7mg,≥ 10mg,≥ 18mg,No (Supports oxygen transport and energy production)
+,underweight(bmi<18.5),Calcium,≥ 300mg,≥ 500mg,≥ 800mg,"≥ 1,000mg","No (Supports bone health, prevents fractures)"
+,underweight(bmi<18.5),Magnesium,≥ 30mg,≥ 50mg,≥ 100mg,≥ 310-420mg,"No (Supports metabolism, muscle function, and energy levels)"
+,underweight(bmi<18.5),Vitamin D,≥ 400 IU,≥ 600 IU,≥ 800 IU,"≥ 1,000 IU",No (Essential for calcium absorption and immune system support)
+,underweight(bmi<18.5),Omega-3 Fatty Acids (EPA/DHA),≥ 50mg,≥ 100mg,≥ 200mg,≥ 250-500mg,No (Supports heart health and inflammation reduction)
+,underweight(bmi<18.5),"Artificial Preservatives (BHA, BHT, Sodium Benzoate)",Avoid,Avoid,Limit,Limit,Yes (Avoid; linked to long-term health issues)
+,underweight(bmi<18.5),"Artificial Colors (Red 40, Yellow 5, Blue 1, etc.)",Avoid,"Avoid	",Limit,Limit,yes (May cause digestive issues and hyperactivity)
+,,,,,,,
+7,normal(bmi 18.5-24.9),Sodium (Salt),≤ 150mg,≤ 200mg,≤ 300mg,"≤ 2,300mg",Limit (Excess sodium can contribute to high blood pressure and kidney problems)
+,normal(bmi 18.5-24.9),Potassium,≥ 200mg,≥ 300mg,≥ 400mg,"≥ 4,700mg","No, moderate intake supports heart and muscle function"
+,normal(bmi 18.5-24.9),Cholesterol,≤ 20mg,≤ 40mg,≤ 50mg,≤ 200mg,No (Focus on healthy fats; limit high-cholesterol foods)
+,normal(bmi 18.5-24.9),Saturated Fat,≤ 3g,≤ 5g,≤ 7g,≤ 10g,Limit (Excess can contribute to heart disease and weight gain)
+,normal(bmi 18.5-24.9),Trans Fat,0g (Avoid),0g (Avoid),0g (Avoid),0g (Avoid),Yes (Fully avoid; raises LDL cholesterol and increases heart disease risk)
+,normal(bmi 18.5-24.9),Sugar,≤ 5g,≤ 8g,≤ 10g,≤ 10-20g,"Limit added sugars (Excess causes weight gain, insulin resistance, and other health issues)"
+,normal(bmi 18.5-24.9),Refined Carbohydrates,Limit,Limit,Limit,Limit,Limit (Choose whole grains over refined carbs for steady energy and metabolism)
+,normal(bmi 18.5-24.9),Fiber,≥ 3g,≥ 4g,≥ 5g,≥ 25g,"Yes, but not excessive; fiber helps with digestion, blood sugar regulation, and heart health"
+,normal(bmi 18.5-24.9),Protein,≥ 3g,≥ 5g,≥ 7g,≥ 50g,"No, protein is important for muscle maintenance and overall health"
+,normal(bmi 18.5-24.9),Caffeine,≤ 100mg,≤ 150mg,≤ 200mg,≤ 400mg,"Limit (Moderate intake is fine, but excess can lead to restlessness, anxiety, and sleep disruption)"
+,normal(bmi 18.5-24.9),Iron,≥ 5mg,≥ 7mg,≥ 10mg,≥ 18mg,"No, adequate intake supports oxygen transport and energy metabolism"
+,normal(bmi 18.5-24.9),Calcium,≥ 300mg,≥ 500mg,≥ 800mg,"≥ 1,000mg","No, sufficient intake is needed for bone and dental health"
+,normal(bmi 18.5-24.9),Magnesium,≥ 30mg,≥ 50mg,≥ 100mg,≥ 310-420mg,"No, magnesium supports muscle function, nerve transmission, and energy production"
+,normal(bmi 18.5-24.9),Vitamin D,≥ 400 IU,≥ 600 IU,≥ 800 IU,"≥ 1,000 IU","No, helps calcium absorption and supports immune system function"
+,normal(bmi 18.5-24.9),Omega-3 Fatty Acids (EPA/DHA),≥ 50mg,≥ 100mg,≥ 200mg,≥ 250-500mg,"No, essential for heart health and inflammation regulation"
+,normal(bmi 18.5-24.9),"Artificial Preservatives (BHA, BHT, Sodium Benzoate)",Avoid,Avoid,Limit,Limit,Yes (May cause long-term health risks like inflammation and hormonal disruption)
+,normal(bmi 18.5-24.9),"Artificial Colors (Red 40, Yellow 5, Blue 1, etc.)",Avoid,Avoid,Limit,Limit,Yes (Can negatively affect metabolism and may lead to hyperactivity and digestive issues)
+,normal(bmi 18.5-24.9),"Processed/Refined Carbs (White Flour, White Rice, etc.)",Limit,Limit,Limit,Limit,"Yes (Refined carbs can spike insulin and blood sugar levels, leading to fat storage and metabolic issues)"
+,,,,,,,
+8,Overweight (BMI 25-29.9),Sodium (Salt),≤ 150mg,≤ 200mg,≤ 300mg,"≤ 2,300mg",Limit (Excess sodium can increase fluid retention and blood pressure)
+,Overweight (BMI 25-29.9),Potassium,≥ 200mg,≥ 300mg,≥ 400mg,"≥ 4,700mg",No (Helps balance sodium and fluid levels)
+,Overweight (BMI 25-29.9),Cholesterol,≤ 30mg,≤ 50mg,≤ 70mg,≤ 200mg,Limit (Focus on healthy fats to control LDL cholesterol)
+,Overweight (BMI 25-29.9),Saturated Fat,≤ 3g,≤ 5g,≤ 7g,≤ 10g,Limit (Excess can raise LDL cholesterol and contribute to weight gain)
+,Overweight (BMI 25-29.9),Trans Fat,0g (Avoid),0g (Avoid),0g (Avoid),0g (Avoid),Yes (Avoid; raises LDL and increases heart disease risk)
+,Overweight (BMI 25-29.9),Sugar,≤ 5g,≤ 8g,≤ 10g,≤ 10-15g,Limit (Excess sugar contributes to weight gain and poor blood sugar control)
+,Overweight (BMI 25-29.9),"Refined Carbohydrates (White Flour, White Rice)",Limit,Limit,Limit,Limit,Yes (Refined carbs spike insulin levels and contribute to fat storage)
+,Overweight (BMI 25-29.9),Fiber,≥ 3g,≥ 4g,≥ 5g,≥ 25g,"No (Fiber helps control appetite, regulate digestion, and maintain healthy weight)"
+,Overweight (BMI 25-29.9),Protein,≥ 5g,≥ 8g,≥ 10g,≥ 50g,"No (Protein helps build muscle, increasing metabolism and promoting fat loss)"
+,Overweight (BMI 25-29.9),Caffeine,Limit,Limit,Limit,≤ 200mg,Yes (Excess caffeine can lead to increased stress and affect appetite)
+,Overweight (BMI 25-29.9),Iron,≥ 5mg,≥ 7mg,≥ 10mg,≥ 18mg,No (Helps maintain energy levels and metabolic function)
+,Overweight (BMI 25-29.9),Calcium,≥ 300mg,≥ 500mg,≥ 800mg,"≥ 1,000mg","No (Supports bone health, which is important when losing weight)"
+,Overweight (BMI 25-29.9),Magnesium,≥ 30mg,≥ 50mg,≥ 100mg,≥ 310-420mg,No (Supports muscle function and metabolism)
+,Overweight (BMI 25-29.9),Vitamin D,≥ 400 IU,≥ 600 IU,≥ 800 IU,"≥ 1,000 IU",No (Important for calcium absorption and weight management)
+,Overweight (BMI 25-29.9),Omega-3 Fatty Acids (EPA/DHA),≥ 50mg,≥ 100mg,≥ 200mg,≥ 250-500mg,"No (Supports heart health, reduces inflammation, and aids fat metabolism)"
+,Overweight (BMI 25-29.9),"Artificial Preservatives (BHA, BHT, Sodium Benzoate)",Avoid,Avoid,Limit,Limit,"Yes (Avoid; linked to digestive issues, inflammation, and potential weight gain)"
+,Overweight (BMI 25-29.9),"Artificial Colors (Red 40, Yellow 5, Blue 1, etc.)",Avoid,Avoid,Limit,Limit,"Yes (May contribute to hyperactivity, digestive issues, and weight gain)"
+9,High Cholesterol,Sodium (Salt),≤ 150mg,≤ 200mg,≤ 300mg,"≤ 2,300mg",Limit (Excess sodium contributes to fluid retention and high blood pressure)
+,High Cholesterol,Potassium,≥ 200mg,≥ 300mg,≥ 400mg,"≥ 4,700mg",No (Helps manage fluid balance and blood pressure)
+,High Cholesterol,Cholesterol,≤ 30mg,≤ 50mg,≤ 70mg,≤ 200mg,Limit (Excess cholesterol can increase LDL and raise heart disease risk)
+,High Cholesterol,Saturated Fat,≤ 2g,≤ 3g,≤ 4g,≤ 5g,"Limit (Raises LDL cholesterol, contributing to clogged arteries)"
+,High Cholesterol,Trans Fat,0g (Avoid),0g (Avoid),0g (Avoid),0g (Avoid),Yes (Avoid; significantly raises LDL cholesterol and reduces HDL)
+,High Cholesterol,Sugar,≤ 5g,≤ 8g,≤ 10g,≤ 10-15g,Limit (Excess sugar can increase triglycerides and contribute to heart disease)
+,High Cholesterol,"Refined Carbohydrates (White Flour, White Rice)",Limit,Limit,Limit,Limit,Yes (Refined carbs lead to elevated triglycerides and weight gain)
+,High Cholesterol,Fiber,≥ 3g,≥ 4g,≥ 5g,≥ 25g,No (Fiber helps reduce LDL cholesterol and supports digestion)
+,High Cholesterol,Protein,≥ 5g,≥ 8g,≥ 10g,≥ 50g,No (Lean proteins help reduce cholesterol and maintain muscle mass)
+,High Cholesterol,Caffeine,Limit,Limit,Limit,≤ 200mg,Yes (Excess caffeine may increase blood pressure and cholesterol levels)
+,High Cholesterol,Iron,≥ 5mg,≥ 7mg,≥ 10mg,≥ 18mg,No (Supports energy levels and healthy circulation)
+,High Cholesterol,Calcium,≥ 300mg,≥ 500mg,≥ 800mg,"≥ 1,000mg",No (Important for bone health and maintaining overall metabolism)
+,High Cholesterol,Magnesium,≥ 30mg,≥ 50mg,≥ 100mg,≥ 310-420mg,No (Supports cardiovascular health and healthy blood pressure)
+,High Cholesterol,Vitamin D,≥ 400 IU,≥ 600 IU,≥ 800 IU,"≥ 1,000 IU",No (Helps calcium absorption and maintains healthy cholesterol levels)
+,High Cholesterol,Omega-3 Fatty Acids (EPA/DHA),≥ 50mg,≥ 100mg,≥ 200mg,≥ 250-500mg,No (Omega-3s help reduce LDL cholesterol and inflammation)
+,High Cholesterol,"Artificial Preservatives (BHA, BHT, Sodium Benzoate)",Avoid,Avoid,Limit,Limit,Yes (Avoid; linked to negative health impacts including weight gain)
+,High Cholesterol,"Artificial Colors (Red 40, Yellow 5, Blue 1, etc.)",Avoid,Avoid,Limit,Limit,Yes (May contribute to increased inflammation and cholesterol)
+,,,,,,,
+10, Normal Cholesterol,Sodium (Salt),≤ 150mg,≤ 200mg,≤ 300mg,"≤ 2,300mg",Limit (Excess sodium can lead to high blood pressure over time)
+, Normal Cholesterol,Potassium,≥ 200mg,≥ 300mg,≥ 400mg,"≥ 4,700mg",No (Supports blood pressure regulation and heart health)
+, Normal Cholesterol,Cholesterol,≤ 30mg,≤ 50mg,≤ 70mg,≤ 200mg,Limit (Excess cholesterol can lead to higher LDL levels over time)
+, Normal Cholesterol,Saturated Fat,≤ 3g,≤ 4g,≤ 5g,≤ 7g,Limit (Excess saturated fat can increase LDL cholesterol over time)
+, Normal Cholesterol,Trans Fat,0g (Avoid),0g (Avoid),0g (Avoid),0g (Avoid),Yes (Avoid; raises LDL cholesterol and reduces HDL cholesterol)
+, Normal Cholesterol,Sugar,≤ 5g,≤ 8g,≤ 10g,≤ 10-15g,Limit (Excess sugar can contribute to weight gain and increased triglycerides)
+, Normal Cholesterol,"Refined Carbohydrates (White Flour, White Rice)",Limit,Limit,Limit,Limit,Limit (Refined carbs can raise triglycerides and lead to weight gain)
+, Normal Cholesterol,Fiber,≥ 3g,≥ 4g,≥ 5g,≥ 25g,No (Fiber helps maintain healthy cholesterol levels and supports digestion)
+, Normal Cholesterol,Protein,≥ 5g,≥ 8g,≥ 10g,≥ 50g,No (Protein helps maintain lean muscle mass and supports metabolism)
+, Normal Cholesterol,Caffeine,Limit,Limit,Limit,≤ 200mg,Limit (Excess caffeine can cause heart palpitations and raise blood pressure)
+, Normal Cholesterol,Iron,≥ 5mg,≥ 7mg,≥ 10mg,≥ 18mg,No (Iron is important for overall health and energy levels)
+, Normal Cholesterol,Calcium,≥ 300mg,≥ 500mg,≥ 800mg,"≥ 1,000mg",No (Supports bone health and cardiovascular function)
+, Normal Cholesterol,Magnesium,≥ 30mg,≥ 50mg,≥ 100mg,≥ 310-420mg,No (Magnesium supports heart health and maintains a healthy blood pressure)
+, Normal Cholesterol,Vitamin D,≥ 400 IU,≥ 600 IU,≥ 800 IU,"≥ 1,000 IU",No (Essential for calcium absorption and helps maintain healthy cholesterol)
+, Normal Cholesterol,Omega-3 Fatty Acids (EPA/DHA),≥ 50mg,≥ 100mg,≥ 200mg,≥ 250-500mg,"No (Supports heart health, reduces inflammation, and helps regulate cholesterol)"
+, Normal Cholesterol,"Artificial Preservatives (BHA, BHT, Sodium Benzoate)",Avoid,Avoid,Limit,Limit,Yes (Avoid; artificial preservatives can contribute to inflammation and potential health issues)
+, Normal Cholesterol,"Artificial Colors (Red 40, Yellow 5, Blue 1, etc.)",Avoid,Avoid,Limit,Limit,Yes (May contribute to inflammation and hyperactivity in some individuals)
+,,,,,,,
+11,low cholestrol,Sodium (Salt),≤ 150mg,≤ 200mg,≤ 300mg,"≤ 2,300mg",Limit (Excess sodium can contribute to fluid retention and high blood pressure)
+,low cholestrol,Potassium,≥ 200mg,≥ 300mg,≥ 400mg,"≥ 4,700mg",No (Essential for regulating heart function and blood pressure)
+,low cholestrol,Cholesterol,≤ 30mg,≤ 50mg,≤ 70mg,≤ 200mg,"No (Cholesterol intake should not be overly restricted, as the body needs it for various functions)"
+,low cholestrol,Saturated Fat,≤ 3g,≤ 4g,≤ 5g,≤ 7g,Limit (Excess saturated fat can contribute to poor heart health and raise LDL cholesterol)
+,low cholestrol,Trans Fat,0g (Avoid),0g (Avoid),0g (Avoid),0g (Avoid),"Yes (Avoid; trans fats raise LDL cholesterol and lower HDL cholesterol, worsening heart health)"
+,low cholestrol,Sugar,≤ 5g,≤ 8g,≤ 10g,≤ 10-15g,Limit (Excess sugar can contribute to weight gain and negatively affect heart health)
+,low cholestrol,"Refined Carbohydrates (White Flour, White Rice)",Limit,Limit,Limit,Limit,Limit (Excessive refined carbs can raise triglycerides and lead to weight gain)
+,low cholestrol,Fiber,≥ 3g,≥ 4g,≥ 5g,≥ 25g,No (Fiber is essential for maintaining good digestion and heart health)
+,low cholestrol,Protein,≥ 5g,≥ 8g,≥ 10g,≥ 50g,"No (Adequate protein supports muscle health and metabolism, essential in low cholesterol)"
+,low cholestrol,Caffeine,Limit,Limit,Limit,≤ 200mg,"No (Moderate caffeine is okay, but too much can affect heart function and blood pressure)"
+,low cholestrol,Iron,≥ 5mg,≥ 7mg,≥ 10mg,≥ 18mg,No (Iron is crucial for maintaining energy and healthy circulation)
+,low cholestrol,Calcium,≥ 300mg,≥ 500mg,≥ 800mg,"≥ 1,000mg","No (Supports bone health, essential even with low cholesterol)"
+,low cholestrol,Magnesium,≥ 30mg,≥ 50mg,≥ 100mg,≥ 310-420mg,No (Magnesium is important for heart health and circulation)
+,low cholestrol,Vitamin D,≥ 400 IU,≥ 600 IU,≥ 800 IU,"≥ 1,000 IU",No (Helps with calcium absorption and supports overall heart health)
+,low cholestrol,Omega-3 Fatty Acids (EPA/DHA),≥ 50mg,≥ 100mg,≥ 200mg,≥ 250-500mg,"No (Omega-3s are beneficial for heart health, even with low cholesterol)"
+,low cholestrol,"Artificial Preservatives (BHA, BHT, Sodium Benzoate)",Avoid,Avoid,Limit,Limit,Yes (Avoid; harmful chemicals can disrupt metabolism and heart function)
+,low cholestrol,"Artificial Colors (Red 40, Yellow 5, Blue 1, etc.)",Avoid,Avoid,Limit,Limit,Yes (Avoid; these can increase inflammation and negatively affect heart health)

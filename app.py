@@ -5,7 +5,6 @@ import pytesseract
 import requests
 import re
 from werkzeug.utils import secure_filename
-
 import numpy as np
 import pandas as pd
 from flask import Flask, render_template, request, redirect, url_for, flash, session, send_file, jsonify
@@ -41,32 +40,9 @@ if not os.path.exists(UPLOAD_FOLDER):
 def save_barcode(barcode):
     """Save barcode in the session."""
     session["barcode"] = barcode
-# Load and preprocess the dataset
-# try:
-#     data = pd.read_csv("foodpr_cleaned_dataset (3).csv")
-# except FileNotFoundError:
-#     print("Dataset file not found. Please check the file path.")
-
-# Strip extra spaces from column names
-# data.columns = data.columns.str.strip()
-
-# # Preprocess the data
-# features = ['fat_100g', 'carbohydrates', 'protein', 'energy_kcal_100g', 'nutriscore_score', 'food_groups']
-
-# # Check if the features are available in the dataset
-# missing_columns = [col for col in features if col not in data.columns]
-# if missing_columns:
-#     print(f"Missing columns in the dataset: {missing_columns}")
-# else:
-#     X = data[features]
-#     y = data['product_name']  # Target: Product name (or any unique product identifier)
-
-#     # Train RandomForest
-#     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-#     rf = RandomForestClassifier(n_estimators=100, random_state=42)
-#     rf.fit(X_train, y_train)
+    
 df_allergies = pd.read_csv("food allergies.csv")  # Ensure this CSV contains "Ingredients" and "Allergies/Problems Caused" columns
-
+df_nurtients = pd.read_csv("nutrients-dataset.csv", encoding="utf-8-sig")
 
 # Function to map ingredients to allergies
 def map_allergens_to_ingredients(ingredient_list):
@@ -84,15 +60,14 @@ def map_allergens_to_ingredients(ingredient_list):
             f"{row['Ingredients']}: {row['Allergies/Problems Caused']}"
             for _, row in mapped_allergies.iterrows()
         ]
-        print("\nAllergy Warnings:", allergy_warnings)  # Debugging
+        # print("\nAllergy Warnings:", allergy_warnings)  # Debugging
         return "\n".join(allergy_warnings)
 
     return "No allergens found for these ingredients."
 
-
 # Function to check allergy (barcode is used once and passed forward)
 def check_allergy(barcode):
-    print("Received barcode in check_allergy:", barcode)  # Debugging
+    # print("Received barcode in check_allergy:", barcode)  # Debugging
 
     ingredient_list = fetch_ingredients(barcode)  # Fetch ingredients once
     return map_allergens_to_ingredients(ingredient_list)  # Check allergies using fetched ingredients
@@ -102,93 +77,57 @@ def allowed_file(filename):
     ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-# Nutri-score calculation
-# Image enhancement for better OCR
-def enhance_image(image):
-    height, width = image.shape[:2]
-    if width < 640 or height < 480:
-        image = cv2.resize(image, None, fx=2, fy=2, interpolation=cv2.INTER_CUBIC)
+#----------------------- Nutri-score calculation
 
-    lab = cv2.cvtColor(image, cv2.COLOR_BGR2LAB)
-    l, a, b = cv2.split(lab)
-    clahe = cv2.createCLAHE(clipLimit=2.5, tileGridSize=(12,12))
-    l = clahe.apply(l)
-    
-    gamma = 1.2
-    l = np.power(l / 255.0, gamma) * 255.0
-    l = l.astype('uint8')
-
-    enhanced = cv2.merge((l,a,b))
-    enhanced = cv2.cvtColor(enhanced, cv2.COLOR_LAB2BGR)
-    
-    denoised = cv2.fastNlMeansDenoisingColored(
-        enhanced, 
-        None,
-        h=7,
-        hColor=7,
-        templateWindowSize=9,
-        searchWindowSize=25
-    )
-    
-    gray = cv2.cvtColor(denoised, cv2.COLOR_BGR2GRAY)
-    blurred = cv2.GaussianBlur(gray, (3,3), 0)
-    
-    thresh = cv2.adaptiveThreshold(
-        blurred,
-        255,
-        cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
-        cv2.THRESH_BINARY_INV,
-        21,
-        8
-    )
-    
-    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (2,2))
-    thresh = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel)
-    
-    debug_dir = './debug_images'
-    if not os.path.exists(debug_dir):
-        os.makedirs(debug_dir)
-    cv2.imwrite(f"{debug_dir}/enhanced_{int(time.time())}.jpg", thresh)
-    
-    return thresh
-
+# OCR Configurations
 OCR_CONFIGS = [
-    # OCR Engine Mode (OEM) and Page Segmentation Mode (PSM) configurations
-    # Config 1: Optimized for columnar data (e.g., nutrition tables)
-    # OEM 1 = Legacy engine only | PSM 4 = Assume single column of variable-sized text
+    # Config 1: Optimized for structured nutrition tables
+    # OEM 3 = LSTM only (best for printed text) | PSM 4 = Single column processing
     {
-        'oem': 1,  # Traditional OCR engine (faster for structured layouts)
-        'psm': 4,   # Column-based text analysis (ideal for nutrition labels)
+        'oem': 3,  # LSTM engine (better accuracy)
+        'psm': 4,  # Column-based text analysis (ideal for nutrition labels)
     },
-    
-    # Config 2: General paragraph processing 
-    # OEM 3 = LSTM neural net only | PSM 6 = Assume uniform text block
-    {
-        'oem': 3,  # Advanced LSTM engine (better for continuous text)
-        'psm': 6,   # Single text block processing (good for ingredient lists)
-    },
-    
-    # Config 3: Single-line text focus
-    # OEM 3 = LSTM engine | PSM 7 = Treat as single text line
+
+    # Config 2: General tabular data processing
+    # OEM 3 = LSTM neural net only | PSM 6 = Uniform text block assumption
     {
         'oem': 3,  # Neural network for character recognition
-        'psm': 7,   # Optimized for product names/header text
+        'psm': 6,  # Single block of text (useful for well-structured tables)
     },
-    
-    # Config 4: Sparse text detection
-    # OEM 3 = LSTM engine | PSM 11 = Sparse text with orientation detection
+
+    # Config 3: Focused single-line text extraction
+    # OEM 3 = LSTM engine | PSM 7 = Treat input as a single text line
     {
-        'oem': 3,  # Best accuracy for scattered text
-        'psm': 11,  # Finds text fragments (e.g., warning labels, icons)
+        'oem': 3,  # Best accuracy for structured text
+        'psm': 7,  # Ideal for extracting individual values in tables
     },
-    
-    # Config 5: Multi-column legacy processing
-    # OEM 1 = Legacy engine | PSM 3 = Fully automatic layout analysis
+
+    # Config 4: Sparse text detection with orientation handling
+    # OEM 3 = LSTM engine | PSM 11 = Sparse text with auto-orientation
     {
-        'oem': 1,  # Fallback to traditional OCR
-        'psm': 3,   # Auto-detect complex layouts (backup for mixed formats)
+        'oem': 3,  # Best for detecting scattered text
+        'psm': 11,  # Useful for detecting misaligned or rotated text
+    },
+
+    # Config 5: Multi-column table processing with hybrid OCR
+    # OEM 2 = Legacy + LSTM | PSM 3 = Automatic layout analysis
+    {
+        'oem': 2,  # Hybrid engine for improved recognition
+        'psm': 3,  # Auto-detects complex layouts (backup for mixed formats)
     }
 ]
+
+# Image enhancement for better OCR
+def enhance_image(image):
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
+    enhanced = clahe.apply(gray)
+    gamma = np.array(255 * (enhanced / 255) ** 1.2, dtype=np.uint8)
+    filtered = cv2.bilateralFilter(gamma, 9, 75, 75)
+    thresh = cv2.adaptiveThreshold(filtered, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 25, 10)
+    kernel = np.ones((2,2), np.uint8)
+    morph = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel)
+    return morph
 
 # OCR and nutrition parsing functions
 def enhanced_ocr(processed_image):
@@ -337,12 +276,11 @@ def process_with_config(image_path, config_idx):
     
     return parse_nutrition(text.lower())
 
+
 sys.stdout.reconfigure(encoding='utf-8')
 
-df = pd.read_csv(r"C:/Users/Priyanka/Downloads/EATFIT-review-1/EATFIT-review-1/nutrients-dataset.csv", encoding="utf-8-sig")
-
 def fetch_health_data(user_id):
-    print(f"[DEBUG] fetch_health_data() called with user_id: {user_id}")
+    #print(f"[DEBUG] fetch_health_data() called with user_id: {user_id}")
 
     cur = mysql.connection.cursor()
    
@@ -362,21 +300,21 @@ def fetch_health_data(user_id):
         # Convert tuple to dictionary
         keys = ["height", "weight", "bmi", "age", "diabetes", "bp", "cholesterol"]
         health_data_dict = dict(zip(keys, health_data))
-        print("Converted Health Data (Dict):", health_data_dict)  # Debugging
-        print("Fetched Age:", health_data_dict.get("age"))         
+        #print("Converted Health Data (Dict):", health_data_dict)  # Debugging
+        #print("Fetched Age:", health_data_dict.get("age")) # Debugging
         return health_data_dict  # Return as dictionary instead of tuple
-    print("[DEBUG] No health data found for user_id:", user_id)
+    #print("[DEBUG] No health data found for user_id:", user_id)
     return None    
 
 def get_age_column(user_id):
-    print(f"[DEBUG] get_age_column() received user_id: {user_id}")  # Check if it's correct
+    #print(f"[DEBUG] get_age_column() received user_id: {user_id}")  # Check if it's correct
     health_data = fetch_health_data(user_id)
     if not health_data:
         print("Error: No health data found for user_id", user_id)
         return None  
 
     age = health_data.get("age")
-    print(f"[DEBUG] Extracted Age from Health Data: {age}")  # Check correct extraction
+    #print(f"[DEBUG] Extracted Age from Health Data: {age}")  # Check correct extraction
 
     if age is None:
         print("Error: Age not found in health data")
@@ -389,20 +327,21 @@ def get_age_column(user_id):
         return "13-18 years"
     else:
         return "Adults"
+
 # Function to fetch ingredients
 def fetch_ingredients(barcode):
     api_url = f"https://world.openfoodfacts.org/api/v2/product/{barcode}.json"
-    print("Fetching barcode:", barcode)  # Debugging
+    #print("Fetching barcode:", barcode)  # Debugging
     
     try:
         response = requests.get(api_url)
         data = response.json()
-        print("\nAPI Response (Ingredients):", data)  # Debugging
+        # print("\nAPI Response (Ingredients):", data)  # Debugging
         
         if data.get("status") == 1:  # Product found
             ingredients_text = data["product"].get("ingredients_text", "")
             ingredient_list = [ing.strip() for ing in ingredients_text.split(",")] if ingredients_text else []
-            print("\nIngredients Found:", ingredient_list)
+            #print("\nIngredients Found:", ingredient_list) # Debugging
             return ingredient_list
         else:
             print("\nProduct not found.")
@@ -420,10 +359,11 @@ def fetch_nutrients(barcode):
         if data.get("status") == 1:  # Product found
             nutriments = data["product"].get("nutriments", {})
             return {
+                "energy_kcal": nutriments.get("energy-kcal_100g", 0),
                 "fat": nutriments.get("fat_100g", 0),
                 "saturated_fat": nutriments.get("saturated-fat_100g", 0),
                 "carbohydrates": nutriments.get("carbohydrates_100g", 0),
-                "sugar": nutriments.get("sugars_100g", 0),
+                "sugars": nutriments.get("sugars_100g", 0),
                 "fiber": nutriments.get("fiber_100g", 0),
                 "protein": nutriments.get("proteins_100g", 0),
                 "salt": nutriments.get("salt_100g", 0),
@@ -434,8 +374,6 @@ def fetch_nutrients(barcode):
             return None
     except Exception as e:
         return None
-
-
 
 def categorize_bmi(user_id):
     health_data = fetch_health_data(user_id)
@@ -456,21 +394,21 @@ def extract_numeric(value):
     return float(re.sub(r"[^\d.]", "", value))
 
 def check_product_safety(nutrition, health_data,user_id):
-    print("Received Nutrition Data:", nutrition)
-    print("Received Health Data:", health_data)
+    #print("Received Nutrition Data:", nutrition)
+    #print("Received Health Data:", health_data)
 
     age_column = get_age_column(user_id)
-    print("Age Column Selected:", age_column)
+    #print("Age Column Selected:", age_column)
 
     review = []
 
     for nutrient, value in nutrition.items():
-        print(f"Checking: {nutrient} with value {value}")
+        # print(f"Checking: {nutrient} with value {value}") # Debugging
 
-        row = df[df["Nutrient/chemicals to avoid"].str.lower() == nutrient.replace("_", " ")]
+        row = df_nurtients[df_nurtients["Nutrient/chemicals to avoid"].str.lower() == nutrient.replace("_", " ")]
         if not row.empty:
             limit_str = str(row[age_column].values[0]).strip()
-            print(f"Limit for {nutrient}: {limit_str}")
+            # print(f"Limit for {nutrient}: {limit_str}") # Debugging
 
             # Extract numeric values correctly
             if "avoid" in limit_str.lower() or limit_str == "0" or re.match(r"0\s*[gmg]*", limit_str, re.IGNORECASE):
@@ -496,7 +434,6 @@ def check_product_safety(nutrition, health_data,user_id):
         return "All nutrients are within safe limits."
 
     return " ".join(review)
-
 
 # Routes for user management
 @app.route('/forgot_password', methods=['GET', 'POST'])
@@ -597,6 +534,7 @@ def health_form():
         flash('Please log in to access the health form.', 'warning')
         return redirect(url_for('login'))
     return render_template('healthForm.html')
+
 @app.route('/edit_health_data')
 def edit_health_data():
     if 'user_id' not in session:
@@ -753,100 +691,107 @@ def upload_file():
             session['nutrition'] = process_with_config(upload_path, 0)
             save_barcode(barcode)  # Save barcode in session
 
-            return redirect(url_for('verify_extraction'))
+            return redirect(url_for('product_details'))
             
         except Exception as e:
             return render_template("upload.html", error=str(e))
 
     return render_template("upload.html")
 
-@app.route("/verify", methods=["GET", "POST"])
-def verify_extraction():
-    if 'file_path' not in session or 'filename' not in session:
-        return redirect(url_for('upload_file'))
+# @app.route("/verify", methods=["GET", "POST"])
+# def verify_extraction():
+#     if 'file_path' not in session or 'filename' not in session:
+#         return redirect(url_for('upload_file'))
     
-    if request.method == 'POST':
-        if request.form.get('user_response') == 'accept':
-            nutrition = session.get('nutrition', {})
-            fields = [
-                'energy_kcal', 'fat', 'saturated_fat',
-                'carbohydrates', 'sugars', 'fiber',
-                'protein', 'salt'
-            ]
+#     if request.method == 'POST':
+#         if request.form.get('user_response') == 'accept':
+#             nutrition = session.get('nutrition', {})
+#             fields = [
+#                 'energy_kcal', 'fat', 'saturated_fat',
+#                 'carbohydrates', 'sugars', 'fiber',
+#                 'protein', 'salt'
+#             ]
             
-            for field in fields:
-                value = request.form.get(field)
-                if value:
-                    try:
-                        nutrition[field] = float(value)
-                    except ValueError:
-                        flash(f'Invalid value for {field.replace("_", " ")}')
-                        return redirect(url_for('verify_extraction'))
+#             for field in fields:
+#                 value = request.form.get(field)
+#                 if value:
+#                     try:
+#                         nutrition[field] = float(value)
+#                     except ValueError:
+#                         flash(f'Invalid value for {field.replace("_", " ")}')
+#                         return redirect(url_for('verify_extraction'))
             
-            session['nutrition'] = nutrition
-            session['nutri_grade'] = calculate_nutri_score(nutrition)
-            return redirect(url_for('product_details'))
-        else:
-            current_idx = session.get('current_config_idx', 0)
-            new_idx = (current_idx + 1) % len(OCR_CONFIGS)
+#             session['nutrition'] = nutrition
+#             session['nutri_grade'] = calculate_nutri_score(nutrition)
+#             return redirect(url_for('product_details'))
+#         else:
+#             current_idx = session.get('current_config_idx', 0)
+#             new_idx = (current_idx + 1) % len(OCR_CONFIGS)
             
-            try:
-                session['current_config_idx'] = new_idx
-                session['nutrition'] = process_with_config(
-                    session['file_path'],
-                    new_idx
-                )
-            except Exception as e:
-                flash(f"Error processing image: {str(e)}")
-                return redirect(url_for('verify_extraction'))
+#             try:
+#                 session['current_config_idx'] = new_idx
+#                 session['nutrition'] = process_with_config(
+#                     session['file_path'],
+#                     new_idx
+#                 )
+#             except Exception as e:
+#                 flash(f"Error processing image: {str(e)}")
+#                 return redirect(url_for('verify_extraction'))
     
-    return render_template(
-        "verify.html",
-        image=session['filename'],
-        nutrition=session.get('nutrition', {}),
-        config_number=session.get('current_config_idx', 0) + 1
-    )
+#     return render_template(
+#         "verify.html",
+#         image=session['filename'],
+#         nutrition=session.get('nutrition', {}),
+#         config_number=session.get('current_config_idx', 0) + 1
+#     )
 
-@app.route("/product_details", methods=["GET","POST"])
+@app.route("/product_details", methods=["GET", "POST"])
 def product_details():
-    print("Session data:", session)  # Debugging to check session values
-   
-    barcode = request.form.get("barcode")
+    #print("Session data:", session)  # Debugging to check session values
 
-    if 'filename' not in session or 'nutrition' not in session:
-        return redirect(url_for('upload_file'))
-    if 'user_id' not in session:  # Check if user_id exists in session
+    if 'user_id' not in session:  # Ensure user is logged in
         flash('You must log in first', 'danger')
         return redirect(url_for('login'))
-    user_id = session.get("user_id")   #  Use user_id instead
-    print("Fetched user_id:", user_id)  # Debugging
+
+    user_id = session.get("user_id")
+    #print("Fetched user_id:", user_id)  # Debugging
     if not user_id:
         return "User ID not found in session.", 400
-    health_data = fetch_health_data(user_id) 
-    print("Fetched health data:", health_data)  # Debugging
-    
 
+    health_data = fetch_health_data(user_id) 
+    #print("Fetched health data:", health_data)  # Debugging
     
     if not health_data:
         return "User health data not found", 404
-    barcode = session.get("barcode")
+
+    barcode = session.get("barcode")  # Get barcode from session
     if not barcode:
         flash("Barcode missing!", "danger")
         return redirect(url_for("upload_file"))
+
+    # Fetch nutrients using barcode
+    nutrition = fetch_nutrients(barcode)
+    if not nutrition:
+        flash("Failed to fetch nutrition data for this product.", "danger")
+        return redirect(url_for("upload_file"))
+
+    # Calculate Nutri-Score
+    session['nutrition'] = nutrition
+    session['nutri_grade'] = calculate_nutri_score(nutrition)
+    
+    # Check allergies
     allergies = check_allergy(barcode) if barcode else "No allergens detected."
 
-    nutrition = session.get('nutrition', {})
-    review = check_product_safety(nutrition, health_data,user_id)
-   
-    return render_template("product_details.html", 
-                      image=session['filename'],
-                      nutrition=session.get('nutrition', {}),
-                      score=session.get('nutri_grade'),
-                      review = review,
-                      health_data=health_data,
-                      allergies=allergies  # Include health data for display
+    # Evaluate product safety
+    review = check_product_safety(nutrition, health_data, user_id)
 
-                    )
+    return render_template("product_details.html", 
+                           image=session.get('filename', 'default.jpg'),
+                           nutrition=nutrition,
+                           score=session.get('nutri_grade'),
+                           review=review,
+                           health_data=health_data,
+                           allergies=allergies)
 
 @app.route("/diet_recommendation")
 def diet_recommendation():
@@ -873,7 +818,8 @@ def alternative_products():
         }
     ]
     return render_template("alternative_products.html", alternatives=alternatives)
-###MEAL_RECOMMENDATION
+
+#--------------------Meal_Recommendation
 @app.route("/", methods=["GET"])
 def meal_page():
     return render_template("meal.html")
@@ -888,7 +834,7 @@ def get_meal():
         height = float(data["height"])
         disease = data["disease"].strip()
 
-        print(f"User Input -> Age: {age}, Weight: {weight}, Height: {height}, Disease: '{disease}'")
+        print(f"User Input -> Age: {age}, Weight: {weight}, Height: {height}, Disease: '{disease}'") # Debugging
 
         bmi, bmi_category, breakfast, lunch, dinner = recommend_meal(age, weight, height, disease)
 
@@ -953,6 +899,8 @@ def get_diet_plan():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+
+#---------------------Main
 if __name__ == "__main__":
     if not all(os.path.exists(f) for f in ["rf_breakfast.pkl", "rf_lunch.pkl", "rf_dinner.pkl", "label_encoders.pkl"]):
         print(" Model files missing! Ensure .pkl files are in the project folder.")

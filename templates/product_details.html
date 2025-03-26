@@ -39,7 +39,7 @@
         .card img {
             border-radius: 10px;
             max-height: 350px;
-            object-fit: cover;
+            object-fit: contain;
             width: 100%;
         }
 
@@ -74,6 +74,19 @@
             font-size: 1.4rem;
             padding: 10px 20px;
             border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .score-box {
+            font-size: 1.4rem;
+            padding: 5px 15px;
+            border-radius: 5px;
+            min-width: 30px;
+            text-align: center;
+            border: 2px solid;
+            margin-right: 5px;
         }
 
         .badge-success {
@@ -131,7 +144,7 @@
         <h1>Product Nutrition Details</h1>
 
         <div class="card">
-           <!-- <img src="{{ url_for('static', filename='uploads/' + image) }}" alt="Uploaded Product Image" class="card-img-top"> -->
+           <img src="{{ url_for('static', filename='uploads/' + image) }}" alt="Uploaded Product Image" class="card-img-top">
 
             <div class="card-body">
                 <div class="nutrition-info">
@@ -148,7 +161,9 @@
                 
 
                 <div class="d-flex align-items-center mt-4">
-                    <h4 class="me-3">Nutri-Score: <span class="badge badge-success">{{ score }}</span></h4>
+                    <h4 class="me-3">Nutri-Score: 
+                        <span class="score-box" id="nutri-score-badge" data-score="{{ score }}">{{ score }} </span> <span>/5</span>
+                    </h4>
                     <button class="btn btn-warning btn-sm">Check Alternate Products</button>
                 </div>
 
@@ -167,5 +182,24 @@
     </div>
     
 </body>
-
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let badge = document.getElementById("nutri-score-badge");
+        let score = parseInt(badge.dataset.score);
+        
+        if (score >= 4) {
+            badge.style.backgroundColor = "green";
+            badge.style.color = "white";
+            badge.style.borderColor = "green";
+        } else if (score === 3) {
+            badge.style.backgroundColor = "yellow";
+            badge.style.color = "black";
+            badge.style.borderColor = "yellow";
+        } else {
+            badge.style.backgroundColor = "red";
+            badge.style.color = "white";
+            badge.style.borderColor = "red";
+        }
+    });
+</script>
 </html>
