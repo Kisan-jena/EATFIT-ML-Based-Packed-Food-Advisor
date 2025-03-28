@@ -350,6 +350,31 @@ def fetch_ingredients(barcode):
     except Exception as e:
         print("\nError fetching ingredients:", e)
         return []
+def fetch_alternative_products(barcode):
+    """
+    Fetch alternative products based on the categories of the given barcode.
+    """
+    api_url = f"https://world.openfoodfacts.org/api/v2/product/{barcode}.json"
+    
+    try:
+        response = requests.get(api_url)
+        data = response.json()
+        
+        if data.get("status") == 1:  # Product found
+            categories = data["product"].get("categories_tags", [])
+            if categories:
+                return get_alternative_products(categories)  # Call helper function
+            else:
+                print("\nNo categories found for this product.")
+                return []
+        else:
+            print("\nProduct not found.")
+            return []
+    
+    except Exception as e:
+        print("\nError fetching alternative products:", e)
+        return []
+
 def fetch_nutrients(barcode):
     api_url = f"https://world.openfoodfacts.org/api/v2/product/{barcode}.json"
     try:
@@ -434,6 +459,48 @@ def check_product_safety(nutrition, health_data,user_id):
         return "All nutrients are within safe limits."
 
     return " ".join(review)
+def get_alternative_products(categories):
+    alternatives = []
+
+    for category in categories:
+        url = f"https://world.openfoodfacts.org/api/v2/search?categories_tags={category}&fields=product_name,nutriscore_grade,nutriments,image_url,positive_points,ingredients_text"
+        response = requests.get(url)
+
+        if response.status_code == 200:
+            products = response.json().get('products', [])
+
+            for product in products:
+                product_name = product.get('product_name', 'Unknown')
+                nutriscore = product.get('nutriscore_grade', 'e')
+                product_image = product.get('image_url', 'static/default.jpg')
+                nutriments = product.get('nutriments', {})
+                ingredients_text = product.get('ingredients_text', 'No ingredient info')
+
+                # Extracting Positive Points
+                proteins = nutriments.get('proteins_value', 0)
+                fiber = nutriments.get('fiber_value', 0)
+                fruits_veggies = nutriments.get('fruits_vegetables_legumes_value', 0)
+
+                positive_points = {
+                    "Proteins": f"{proteins}g",
+                    "Fiber": f"{fiber}g"
+                }
+
+                # Warning if fruits/veggies info is missing
+                warning = ""
+                if fruits_veggies == 0:
+                    warning = " Warning: Fruit/vegetable content is missing from label"
+
+                if nutriscore in ['a', 'b']:
+                    alternatives.append({
+                        "name": product_name,
+                        "nutriscore": nutriscore.upper(),
+                        "image": product_image,
+                        "positive_points": positive_points,
+                        "warning": warning
+                    })
+
+    return alternatives[:6]
 
 # Routes for user management
 @app.route('/forgot_password', methods=['GET', 'POST'])
@@ -784,6 +851,20 @@ def product_details():
 
     # Evaluate product safety
     review = check_product_safety(nutrition, health_data, user_id)
+    url = f"https://world.openfoodfacts.org/api/v2/product/{barcode}.json"
+    response = requests.get(url)
+    
+    if response.status_code == 200:
+        product_data = response.json().get('product', {})
+        categories = product_data.get('categories_tags', [])
+        session["categories"] = categories  # Store categories in session
+    else:
+        categories = []
+
+    if categories:
+        session["alternatives"] = get_alternative_products(categories)  # Store alternatives in session
+    else:
+        session["alternatives"] = []  # Set empty alternatives
 
     return render_template("product_details.html", 
                            image=session.get('filename', 'default.jpg'),
@@ -792,7 +873,6 @@ def product_details():
                            review=review,
                            health_data=health_data,
                            allergies=allergies)
-
 @app.route("/diet_recommendation")
 def diet_recommendation():
     return redirect(url_for('diet_plan'))
@@ -803,22 +883,13 @@ def cart():
 
 @app.route('/alternative_products')
 def alternative_products():
-    alternatives = [
-        {
-            'product_name': 'Product 1',
-            'image_url': 'https://example.com/product1.jpg',
-            'nutriscore_grade': 'A',
-            'reason': 'Based on Nutri-Score similarity'
-        },
-        {
-            'product_name': 'Product 2',
-            'image_url': 'https://example.com/product2.jpg',
-            'nutriscore_grade': 'B',
-            'reason': 'Based on Nutri-Score similarity'
-        }
-    ]
-    return render_template("alternative_products.html", alternatives=alternatives)
+    alternatives = session.get("alternatives", [])  # Fetch alternatives from session
 
+    if not alternatives:
+        flash("No alternative products found!", "warning")
+        return redirect(url_for("product_details"))
+
+    return render_template('alternative_pr.html', alternatives=alternatives)
 #--------------------Meal_Recommendation
 @app.route("/", methods=["GET"])
 def meal_page():

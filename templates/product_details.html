@@ -164,7 +164,7 @@
                     <h4 class="me-3">Nutri-Score: 
                         <span class="score-box" id="nutri-score-badge" data-score="{{ score }}">{{ score }} </span> <span>/5</span>
                     </h4>
-                    <button class="btn btn-warning btn-sm">Check Alternate Products</button>
+                    <a href="{{ url_for('alternative_products') }}" class="btn btn-warning btn-sm">Check Alternate Products</a>
                 </div>
 
 
@@ -174,8 +174,6 @@
                 <h4 class="mt-4">
                     <strong>Possible Allergies:</strong> <span style="font-weight: normal;">{{ allergies if allergies else "No allergens detected." }}</span>
                 </h4>
-
-
                 <a href="/" class="btn btn-back">Upload Another Product</a>
             </div>
         </div>
